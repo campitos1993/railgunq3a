@@ -3,29 +3,32 @@ package analizadorlexicosintactico;
 import automatas.*;
 
 /**
+ * Clase que emula al Analizador Sintactico. En ésta se realiza la traduccion
  *
- * @author Administrator
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class AnalizadorSintactico {
 
     private AnalizadorLexico lexico;
     private String expresionRegular;
-    private Token actual;
     private Alfabeto alfabeto;
     private Automata automata;
-    private boolean error = false;
+    private Token actual;
     private String errMsg = "";
+    private boolean error = false;
 
     /**
-     *
+     * Constructor vacio de la Clase
      */
     public AnalizadorSintactico() {
     }
 
     /**
-     *
-     * @param expReg
-     * @param alfabeto
+     * Contructor de la Clase, toma el String de la expresion regular y el alfabeto,
+     * genera el analizador lexico y genera el AFN.
+     * @param expReg la Expresion Regular
+     * @param alfabeto el conjunto de simbolos del alfabeto
      */
     public AnalizadorSintactico(String expReg, String alfabeto) {
         this.expresionRegular = expReg;
@@ -40,6 +43,10 @@ public class AnalizadorSintactico {
         automata.setTipo(TipoAutomata.AFN);
     }
 
+    /*
+     * Matchea el simbolo obtenido con el esperado. Lanza una Excepcion en caso
+     * de fallo
+     */
     private void Match(String simbolo) throws Exception {
         Token tok = new Token(simbolo); 
         if ( ObtenerActual().compareTo(tok) == 0 ) {
@@ -49,6 +56,9 @@ public class AnalizadorSintactico {
         }
     }
 
+    /*
+     * Obtiene del Analizador Lexico el siguiente token a evaluar
+     */
     private Token sgteCaracter() throws Exception {
         Token sgte = null;
         sgte = this.lexico.siguienteToken();
@@ -56,8 +66,17 @@ public class AnalizadorSintactico {
     }
     
     /**
+     * Metodo que se encarga del analisis sintactico de la expresion. Utiliza el
+     * siguiente BNF para realizar la evaluacion:
+     * So -> EXP1 OR
+     * EXP1 -> EXP2 EXP1 | €
+     * OR -> '|' EXP1 OR | €
+     * EXP 2 -> EXP3 OPERACION
+     * EXP3 -> PARENTESIS | alfabeto
+     * OPERACION -> * | + | ? | €
+     * PARENTESIS -> '(' So ')'
      *
-     * @return
+     * @return El automata finito no determinista (AFN) de la expresion
      */
     public Automata traducir() {
         this.automata = this.So();
@@ -72,6 +91,10 @@ public class AnalizadorSintactico {
         return this.automata;
     }
 
+    /*
+     * Metodo correspondiente a la Produccion:
+     * So -> EXP1 OR 
+     */
     private Automata So() {
         Automata automataIzq = null;
         Automata automataDer;
@@ -79,7 +102,7 @@ public class AnalizadorSintactico {
             automataIzq = this.EXP1();
             automataDer = this.OR();
             if (automataDer != null) {
-                automataIzq.thompson_or(automataDer);
+                automataIzq.thompson_or(automataDer); //automata equivalente a (r|s)
             }
         } catch (Exception ex) {
             this.error = true;
@@ -88,6 +111,10 @@ public class AnalizadorSintactico {
         return automataIzq;
     }
 
+    /*
+     * Metodo correspondiente a la Produccion:
+     * OR -> '|' EXP1 OR | €
+     */
     private Automata OR() throws Exception {
         try {            
             Token or = new Token("|");            
@@ -103,13 +130,17 @@ public class AnalizadorSintactico {
             throw new Exception("Se esperaba el simbolo '|'");
         }
     }
-    
+
+    /*
+     * Metodo correspondiente a la Produccion:
+     * EXP1 -> EXP2 EXP1 | €
+     */
     private Automata EXP1() throws Exception {
         Automata automataIzq = this.EXP2();
         Automata automataDer = this.preEXP1();
         
         if (automataDer != null) {
-            automataIzq.thompson_concat(automataDer);
+            automataIzq.thompson_concat(automataDer); //automata equivalente a rs
         }
         
         return automataIzq;
@@ -120,17 +151,17 @@ public class AnalizadorSintactico {
         Automata a = EXP3();
 
         if (a != null) {
-            char op = operadores();
+            char op = OPERACION();
 
             switch (op) {
                 case '*':
-                    a.thompsonCerraduraKleene();
+                    a.thompsonCerraduraKleene(); //automata equivalente a r*
                     break;
                 case '+':
-                    a.thompsonCerraduraPositiva();
+                    a.thompsonCerraduraPositiva(); //automata equivalente a r+
                     break;
                 case '?':
-                    a.thompsonCeroUno();
+                    a.thompsonCeroUno(); //automata equivalente a r?
                     break;
                 case '€':
                     break;
@@ -139,6 +170,10 @@ public class AnalizadorSintactico {
         return a;
     }
 
+    /*
+     * Si el valor actual es un simbolo del alfabeto o el caracter '('. Se llama
+     * a EXP1 sino se retorna null
+     */
     private Automata preEXP1() throws Exception {
         
         String current = actual.getValor();
@@ -152,19 +187,27 @@ public class AnalizadorSintactico {
         
         return a;
     }
-    
+
+    /*
+     * Metodo correspondiente a la Produccion:
+     * EXP3 -> PARENTESIS | alfabeto
+     */
     private Automata EXP3() throws Exception {
         
         Token parentesisAbierto = new Token("(");
         
         if(actual.compareTo(parentesisAbierto) == 0) {
-            return this.parentesis();
+            return this.PARENTESIS();
         } else {
             return this.alfabeto();
         }
     }
-    
-    private char operadores() throws Exception {
+
+    /*
+     * Metodo correspondiente a la Produccion:
+     * OPERACION -> * | + | ? | €
+     */
+    private char OPERACION() throws Exception {
         char operador = '€';
         
         if (actual.getValor().compareTo("") != 0) {
@@ -186,8 +229,12 @@ public class AnalizadorSintactico {
         }
         return operador;
     }
-    
-    private Automata parentesis() throws Exception {
+
+    /*
+     * Metodo correspondiente a la Produccion:
+     * PARENTESIS -> '(' So ')'
+     */
+    private Automata PARENTESIS() throws Exception {
         try {
             this.Match("(");
         } catch (Exception ex) {
@@ -206,7 +253,10 @@ public class AnalizadorSintactico {
         
         return a;
     }
-    
+
+    /*
+     * Crea el automata simple para cada entrada del simbolo del alfabeto
+     */
     private Automata alfabeto() throws Exception {
         Automata automataSimple = null;
         try {
@@ -220,90 +270,34 @@ public class AnalizadorSintactico {
         }
         return automataSimple;
     }
-    
-    
-    /**
-     *
-     * @return
-     */
-    public String obtenerExpresion() {
-        return expresionRegular;
-    }
 
     /**
-     *
-     * @param expReg
-     */
-    public void setExpresion(String expReg) {
-        this.expresionRegular = expReg;
-        this.lexico = new AnalizadorLexico(expReg, alfabeto);
-        try {
-            this.actual = sgteCaracter();
-        } catch (Exception ex) {
-            this.error = true;
-        }
-        automata = new Automata();
-    }
-
-    /**
-     *
-     * @return
+     * Obtiene el Token evaluado
+     * @return Token evaluado
      */
     public Token ObtenerActual() {
         return actual;
     }
 
     /**
-     *
-     * @param act
+     * Setea el Token a evaluar
+     * @param act Token a setear
      */
     public void setActual(Token act) {
         this.actual = act;
     }
 
     /**
-     *
-     * @return
-     */
-    public Alfabeto ObtenerAlfabeto() {
-        return alfabeto;
-    }
-
-    /**
-     *
-     * @param alfabeto
-     */
-    public void setAlfabeto(Alfabeto alfabeto) {
-        this.alfabeto = alfabeto;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Automata getAutomata() {
-        return automata;
-    }
-
-    /**
-     *
-     * @param Aut
-     */
-    public void setAutomata(Automata Aut) {
-        this.automata = Aut;
-    }
-
-    /**
-     *
-     * @return
+     * Retorna si hubo o no errores en el Analizador
+     * @return true o false
      */
     public boolean isHayErrores() {
         return error;
     }
 
     /**
-     *
-     * @return
+     * Obtiene el mensaje que se cargo al haber un error
+     * @return El mensaje de error
      */
     public String getErrMsg() {
         return errMsg;

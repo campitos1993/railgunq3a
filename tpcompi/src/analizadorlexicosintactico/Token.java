@@ -1,16 +1,18 @@
 package analizadorlexicosintactico;
 
 /**
+ * Clase que implementa los Token del Analizador Sintactico/Lexico
  *
- * @author Administrator
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Token implements Comparable<Token> {
     private TipoToken tipo;
     private String valor;
     
     /**
-     *
-     * @param simbolo
+     * Constructor de la clase
+     * @param simbolo Valor del token
      */
     public Token(String simbolo) {
         this.valor = simbolo;
@@ -18,38 +20,42 @@ public class Token implements Comparable<Token> {
     }
 
     /**
-     *
-     * @return
+     * Obtiene el tipo del Token
+     * @return TipoToken del Token
      */
     public TipoToken getTipo() {
         return tipo;
     }
 
     /**
-     *
-     * @return
+     * Obtiene el valor del Token
+     * @return Valor del Token
      */
     public String getValor() {
         return valor;
     }
 
     /**
-     *
-     * @param tipo
+     * Setea el tipo del Token
+     * @param tipo TipoToken que indica el tipo
      */
     public void setTipo(TipoToken tipo) {
         this.tipo = tipo;
     }
 
     /**
-     *
-     * @param valor
+     * Setea el valor del Token y el tipo del Token
+     * @param valor String con el simbolo
      */
     public void setValor(String valor) {
         this.valor = valor;
         this.setTipo(valor);
     }
-    
+
+    /*
+     * Metodo para realizar la comparacion con otro Token.
+     * @return 0 Se es igual, -1 Si es distinto
+     */
     public int compareTo(Token t) {
         if (this.getTipo() == t.getTipo() 
                 && this.getValor().compareTo(t.getValor()) == 0 ) {
@@ -59,6 +65,10 @@ public class Token implements Comparable<Token> {
         }
     }
 
+    /*
+     * Setea el Tipo del Token dado el simbolo y almaneca el simbolo en el valor
+     * si pertenece al alfabeto
+     */
     private void setTipo(String simbolo) {
         
         if (simbolo.isEmpty()) {

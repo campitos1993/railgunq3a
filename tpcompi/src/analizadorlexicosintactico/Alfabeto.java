@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
+ * Clase que contiene todos los simbolos del alfabeto
  *
- * @author Administrator
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Alfabeto extends ArrayList<String> {
 
     /**
-     *
-     * @param simbolos
+     * Constructor de la clase, toma un String y almacena cada caracter en el Alfabeto
+     * @param simbolos Alfabeto a guardar
      */
     public Alfabeto(String simbolos) {
         for (int i = 0; i < simbolos.length(); i++) {
@@ -24,15 +26,18 @@ public class Alfabeto extends ArrayList<String> {
     }
     
     /**
-     *
-     * @param simbolo
-     * @return
+     * Metodo para determinar si un simbolo esta en el alfabeto
+     * @param simbolo Caracter a buscar dentro de Alfabeto
+     * @return true en caso de exito, false sino
      */
     public boolean contiene(String simbolo) {
         if ( this.contains(simbolo) ) return true;
         return false;
     }
-    
+
+    /**
+     * Metodo que ordena el alfabeto
+     */
     private void ordenar() {
         String a[] = new String[1];
         a = this.toArray(a);
@@ -45,16 +50,16 @@ public class Alfabeto extends ArrayList<String> {
     }
 
     /**
-     *
-     * @return
+     * Obtiene el tamaño del Alfabeto
+     * @return Cantidad de simbolos del Alfabeto
      */
     public int ObtenerTamano() {
         return this.size();
     }
 
     /**
-     *
-     * @return
+     * Obtiene un manejador de iteracion sobre el Alfabeto
+     * @return el Iterador
      */
     public Iterator ObtenerIterador() {
         return this.iterator();
