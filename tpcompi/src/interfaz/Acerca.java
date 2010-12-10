@@ -28,7 +28,6 @@ public class Acerca extends javax.swing.JFrame {
         Aceptar = new javax.swing.JButton();
         titulo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Acerca...");
         setResizable(false);
 

@@ -92,6 +92,15 @@ public class Main extends javax.swing.JFrame {
 
         ABC_jLabel.setText("Alfabeto:");
 
+        jTextFieldABC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldABCKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldABCKeyReleased(evt);
+            }
+        });
+
         jCheckBox1.setBackground(javax.swing.UIManager.getDefaults().getColor("Menu.selectionBackground"));
         jCheckBox1.setText("[a-z]");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -578,6 +587,7 @@ public class Main extends javax.swing.JFrame {
             this.validar = new Validar(jTextFieldExpReg.getText(),jTextFieldABC.getText(),this.afd);
         }
         this.validar.setVisible(true);
+        this.validar.focoTXT();
     }//GEN-LAST:event_ValidarActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
@@ -618,6 +628,30 @@ public class Main extends javax.swing.JFrame {
     private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
         SalirActionPerformed(null);
     }//GEN-LAST:event_SalirMouseClicked
+
+    private void jTextFieldABCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldABCKeyPressed
+        if(jTextFieldABC.getText().compareTo("")==0){
+            jCheckBox1.setEnabled(true);
+            jCheckBox2.setEnabled(true);
+            jCheckBox3.setEnabled(true);
+        } else {
+            jCheckBox1.setEnabled(false);
+            jCheckBox2.setEnabled(false);
+            jCheckBox3.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTextFieldABCKeyPressed
+
+    private void jTextFieldABCKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldABCKeyReleased
+       if(jTextFieldABC.getText().compareTo("")==0){
+            jCheckBox1.setEnabled(true);
+            jCheckBox2.setEnabled(true);
+            jCheckBox3.setEnabled(true);
+        } else {
+            jCheckBox1.setEnabled(false);
+            jCheckBox2.setEnabled(false);
+            jCheckBox3.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTextFieldABCKeyReleased
 
     /**
     * @param args the command line arguments

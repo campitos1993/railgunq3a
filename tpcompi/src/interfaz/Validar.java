@@ -33,6 +33,7 @@ public class Validar extends javax.swing.JFrame {
         initComponents();
         jTextFielExp.setText(exp);
         jTextFieldABC.setText(alf);
+        this.focoTXT();
     }
 
     /** This method is called from within the constructor to
@@ -54,8 +55,6 @@ public class Validar extends javax.swing.JFrame {
         jButtonLimpiar = new javax.swing.JButton();
         jButtonValidar = new javax.swing.JButton();
         jButtonCerrar = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(javax.swing.UIManager.getDefaults().getColor("Menu.selectionBackground"));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Validación", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -186,7 +185,10 @@ public class Validar extends javax.swing.JFrame {
             return;
         }
     }//GEN-LAST:event_jButtonValidarActionPerformed
-    
+
+    public void focoTXT(){
+        jTextFieldTxt.requestFocus();
+    }
     /**
      *
      * @return
