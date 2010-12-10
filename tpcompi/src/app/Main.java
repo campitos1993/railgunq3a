@@ -4,7 +4,7 @@
  */
 
 /*
- * Main2.java
+ * Main.java
  *
  * Created on 29/11/2010, 10:54:39 AM
  */
