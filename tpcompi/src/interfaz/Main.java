@@ -211,6 +211,7 @@ public class Main extends javax.swing.JFrame {
                 "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
+        this.resetTablaRenderer(this.AFN_jTable);
         jScrollPane1.setViewportView(AFN_jTable);
 
         javax.swing.GroupLayout AFN_jPanelLayout = new javax.swing.GroupLayout(AFN_jPanel);
@@ -251,6 +252,7 @@ public class Main extends javax.swing.JFrame {
                 "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
+        this.resetTablaRenderer(this.AFD_jTable);
         jScrollPane3.setViewportView(AFD_jTable);
 
         javax.swing.GroupLayout AFD_jPanelLayout = new javax.swing.GroupLayout(AFD_jPanel);
@@ -291,6 +293,7 @@ public class Main extends javax.swing.JFrame {
                 "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
+        this.resetTablaRenderer(this.AFDM_jTable);
         jScrollPane4.setViewportView(AFDM_jTable);
 
         javax.swing.GroupLayout AFDM_jPanelLayout = new javax.swing.GroupLayout(AFDM_jPanel);
@@ -606,7 +609,7 @@ public class Main extends javax.swing.JFrame {
         if(!Validar.isEnabled())
             return;
         if(this.validar == null) {
-            this.validar = new Validar(jTextFieldExpReg.getText(),jTextFieldABC.getText(),this.afd);
+            this.validar = new Validar(jTextFieldExpReg.getText(),jTextFieldABC.getText(),this.afdMin);
         }
         this.validar.setVisible(true);
         this.validar.focoTXT();
@@ -701,8 +704,7 @@ public class Main extends javax.swing.JFrame {
         tmodel.arreglarObjetosNulos();
         Tabla.setModel(tmodel);
         this.resetTablaRenderer(Tabla);
-    }
-    
+    } 
 
     private void resetTablaRenderer(JTable Tabla) {
         Tabla.setBackground(Color.white);

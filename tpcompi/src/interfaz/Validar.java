@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
  * @author Sebastian Lena
  */
 public class Validar extends javax.swing.JFrame {
-    private Automata AFD;
-    private Simulacion afdSimulacion;
+    private Automata AFDMin;
+    private Simulacion afdMinSimulacion;
     
     /** Creates new form Validar
      * @param exp Expresion regular
@@ -21,7 +21,7 @@ public class Validar extends javax.swing.JFrame {
      * @param a Automata
      */
     public Validar(String exp, String alf, Automata a) {
-        this.AFD = a;
+        this.AFDMin = a;
         initComponents();
         jTextFielExp.setText(exp);
         jTextFieldABC.setText(alf);
@@ -165,7 +165,7 @@ public class Validar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     private void jButtonValidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValidarActionPerformed
-        if(validarAFD()) {
+        if(validarAFDMin()) {
             JOptionPane.showMessageDialog(this,
                 "El texto es válido con la Expresión y el Alfabeto",
                 "Válido", JOptionPane.INFORMATION_MESSAGE);
@@ -189,9 +189,9 @@ public class Validar extends javax.swing.JFrame {
      * Metodo para validar la entrada
      * @return true en caso de exito o false en caso contrario
      */
-    public boolean validarAFD() {
-        this.setAfdSim(new Simulacion(this.jTextFieldTxt.getText(), this.AFD));
-        boolean exito = this.getAfdSim().validar();
+    public boolean validarAFDMin() {
+        this.setAfdMinSim(new Simulacion(this.jTextFieldTxt.getText(), this.AFDMin));
+        boolean exito = this.getAfdMinSim().validar();
         return exito;
     }
     
@@ -199,16 +199,16 @@ public class Validar extends javax.swing.JFrame {
      * Obtiene el Simulador del AFD
      * @return Simulador AFD
      */
-    public Simulacion getAfdSim() {
-        return afdSimulacion;
+    public Simulacion getAfdMinSim() {
+        return afdMinSimulacion;
     }
     
     /**
      * Setea el Simulador del AFD
-     * @param afdSimulacion Simulador AFD
+     * @param afdMinSimulacion Simulador AFD
      */
-    public void setAfdSim(Simulacion afdSimulacion) {
-        this.afdSimulacion = afdSimulacion;
+    public void setAfdMinSim(Simulacion afdMinSimulacion) {
+        this.afdMinSimulacion = afdMinSimulacion;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

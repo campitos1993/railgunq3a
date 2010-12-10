@@ -372,7 +372,7 @@
                         </Property>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFN_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFN_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));&#xa;this.resetTablaRenderer(this.AFN_jTable);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -424,7 +424,7 @@
                         </Property>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFD_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFD_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));&#xa;this.resetTablaRenderer(this.AFD_jTable);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
@@ -476,7 +476,7 @@
                         </Property>
                       </Properties>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFDM_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFDM_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));&#xa;this.resetTablaRenderer(this.AFDM_jTable);"/>
                       </AuxValues>
                     </Component>
                   </SubComponents>
