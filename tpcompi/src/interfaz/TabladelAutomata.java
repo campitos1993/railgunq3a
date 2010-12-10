@@ -1,6 +1,6 @@
-package app;
+package interfaz;
 
-import afgenjava.*;
+import automatas.*;
 import java.util.Iterator;
 import javax.swing.table.AbstractTableModel;
 
@@ -8,10 +8,10 @@ import javax.swing.table.AbstractTableModel;
  * Tabla de Transiciones de un automata ajustado para ser utilizado como el 
  * modelo de un componente Jtable
  * 
- * @author Cristhian Parra ({@link cdparra@gmail.com})
- * @author Fernando Mancía ({@link fernandomancia@gmail.com})
+ * @author 
+ * @author 
  */
-public class AutomataTable extends AbstractTableModel {
+public class TabladelAutomata extends AbstractTableModel {
 
     /**
      * Automata cuya tabla de tranciciones se quiere representar
@@ -21,55 +21,57 @@ public class AutomataTable extends AbstractTableModel {
     /**
      * Cantidad de columnas de la Tabla
      */
-    private int columnCount = 0;
+    private int cantidadColumnas = 0;
     
     /**
      * Cantidad de filas de la tabla
      */
-    private int rowCount = 0;
+    private int cantidadFilas = 0;
     
     /**
      * Matriz que contiene los data a desplegar en el JTable. 
      */
-    private Object [][] data;
+    private Object [][] datos;
     
     /**
      * Etiqueta de cada columna de la tabla
      */
-    private String [] columnsName;
+    private String [] nombresColumnas;
     
     /**
      * Cuenta de simbolos del alfabeto que realmente se utilizan
      */
-    private int columnRealCount;
+    private int cantidadRealColumnas;
 
-    public AutomataTable(Automata automata) {
-        this.automata       = automata;        
+    /**
+     *
+     * @param automata
+     */
+    public TabladelAutomata(Automata automata) {
+        this.automata = automata;
         
         if (automata != null) {
 
-            //@TODO: cambiar getAlpha() por una funcion que te diga realmente cuales se utilizan
-            //this.columnCount = this.automata.getAlpha().size()+1; // La primera columna es de las etiquetas de estado
-            this.columnCount = this.automata.getAlphaUsed()+1; // La primera columna es de las etiquetas de estado
+            this.cantidadColumnas = this.automata.getAlphaUsed()+1; // La primera columna es de las etiquetas de estado
 
             // Si es AFN, se debe tener entre los elementos del alfabeto al vacio
             if (this.automata.getTipo() == TipoAutomata.AFN) {
-                this.columnCount++;
-                this.columnRealCount++;
+                this.cantidadColumnas++;
+                this.cantidadRealColumnas++;
             }
 
-            this.rowCount = this.automata.getEstados().size();
-            this.columnsName = new String[this.columnCount]; 
-            this.data = new Object[this.rowCount][this.columnCount];
-            this.columnRealCount = 0;
+            this.cantidadFilas = this.automata.getEstados().size();
+            this.nombresColumnas = new String[this.cantidadColumnas];
+            this.datos = new Object[this.cantidadFilas][this.cantidadColumnas];
+            this.cantidadRealColumnas = 0;
 
             //fixed titulo
-            this.columnsName[0] = "ESTADOS";
+            this.nombresColumnas[0] = "ESTADOS";
             
             // Si es AFN, se debe tener entre los elementos del alfabeto al vacio
             if (this.automata.getTipo() == TipoAutomata.AFN) {
-                this.columnsName[1] = "€";
-                this.columnsName[0] = "ESTADOS";
+                this.nombresColumnas[1] = "€";
+                this.nombresColumnas[0] = "ESTADOS";
             }
 
             this.loadTable();
@@ -81,11 +83,11 @@ public class AutomataTable extends AbstractTableModel {
      * @param col Cantidad de columnas de la tabla
      * @param fil Cantidad de filas de la tabla
      */
-    public AutomataTable(int fil, int col) {
-        this.rowCount       = fil;
-        this.columnCount    = col;
-        this.columnsName    = new String[col];
-        this.data           = new Object[fil][col];
+    public TabladelAutomata(int fil, int col) {
+        this.cantidadFilas       = fil;
+        this.cantidadColumnas    = col;
+        this.nombresColumnas    = new String[col];
+        this.datos           = new Object[fil][col];
     }
     
     /**
@@ -93,7 +95,7 @@ public class AutomataTable extends AbstractTableModel {
      * @return Cantidad de columnas de la tabla
      */
     public int getColumnCount() {
-        return this.columnCount;
+        return this.cantidadColumnas;
     }
 
     /**
@@ -101,7 +103,7 @@ public class AutomataTable extends AbstractTableModel {
      * @return Cantidad de filas de la tabla
      */
     public int getRowCount() {
-        return this.rowCount;
+        return this.cantidadFilas;
     }
 
     /**
@@ -111,7 +113,7 @@ public class AutomataTable extends AbstractTableModel {
      */
     @Override
     public String getColumnName(int col) {
-        return this.columnsName[col];
+        return this.nombresColumnas[col];
     }
     
     /**
@@ -120,7 +122,7 @@ public class AutomataTable extends AbstractTableModel {
      * @param nombre Nombre de la columna.
      */
     public void setColumnName(int col, String nombre) {
-        this.columnsName[col] = nombre;
+        this.nombresColumnas[col] = nombre;
     }
 
     /**
@@ -130,7 +132,7 @@ public class AutomataTable extends AbstractTableModel {
      * @return Objeto almacenado en las posiciones [row,col]
      */
     public Object getValueAt(int row, int col) {
-        return this.data[row][col];
+        return this.datos[row][col];
     }
     
     /**
@@ -141,7 +143,7 @@ public class AutomataTable extends AbstractTableModel {
      */
     @Override
     public void setValueAt(Object value, int row, int col) {
-        this.data[row][col] = value;
+        this.datos[row][col] = value;
         this.fireTableCellUpdated(row, col);
     }
 
@@ -161,9 +163,9 @@ public class AutomataTable extends AbstractTableModel {
      */
     public void arreglarObjetosNulos() {
         String vacio = " ";
-        for (int i = 0; i < this.rowCount; i++) {
-            for (int j = 0; j < this.columnCount; j++) {
-                Object o = this.data[i][j];
+        for (int i = 0; i < this.cantidadFilas; i++) {
+            for (int j = 0; j < this.cantidadColumnas; j++) {
+                Object o = this.datos[i][j];
                 if (o == null) {
                     this.setValueAt(vacio, i, j);
                 }
@@ -178,6 +180,10 @@ public class AutomataTable extends AbstractTableModel {
         return automata;
     }
 
+    /**
+     *
+     * @param automata
+     */
     public void setAutomata(Automata automata) {
         this.automata = automata;
     }
@@ -215,9 +221,9 @@ public class AutomataTable extends AbstractTableModel {
                 // Si la columna obtenida es -1, todavía no se cargó 
                 // esta etiqueta al encabezado
                 if (indexCol < 0) {                    
-                   indexCol = this.columnRealCount+1;
-                   this.columnsName[indexCol] = symbol;
-                   this.columnRealCount++;
+                   indexCol = this.cantidadRealColumnas+1;
+                   this.nombresColumnas[indexCol] = symbol;
+                   this.cantidadRealColumnas++;
                    
                 }
                 
@@ -242,8 +248,8 @@ public class AutomataTable extends AbstractTableModel {
     public String toString() {
         String result="";
         
-        for (int i = 0; i < data.length; i++) {
-            Object[] objects = data[i]; 
+        for (int i = 0; i < datos.length; i++) {
+            Object[] objects = datos[i];
             for (int j = 0; j < objects.length; j++) {
                 Object object = objects[j];    
                 if (object != null) {

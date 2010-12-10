@@ -1,53 +1,35 @@
-/*
- * AlgSubconjuntos.java
- *
- * Created on 8 de noviembre de 2008, 04:42 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
+package automatas;
 
-package afgenjava;
-
-import exceptions.AutomataException;
-import graphviz.GraphViz;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Vector;
-import traductor.Analizador;
-import traductor.Token;
+import analizadorlexicosintactico.Token;
 
 /**
  *
- * @author Administrador
+ * @author Administrator
  */
-public class AlgSubconjuntos {
+public class Subconjuntos {
     Automata AFN;
-    /**
-     *  AFD, Matriz final que representa el AFD.
-     **/
     private Dtrans dtrans;
-
-    
-    /**
-     *  Lista de estados que se ira formando para el AFD
-     */
     ArrayList<ListaEstados> Destados;
             
-    
-    
-    /** Creates a new instance of AlgSubconjuntos */
-    public AlgSubconjuntos(Automata AFN) {
+    /**
+     *
+     * @param AFN
+     */
+    public Subconjuntos(Automata AFN) {
         this.AFN = AFN;
         dtrans = new Dtrans();
         Destados = new ArrayList();
     }
-    
-    
-    
-    public Dtrans ejecutar() throws AutomataException{
-        Iterator it;
+
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public Dtrans ejecutar() throws Exception{
+        Iterator iterdor;
         Token simbolo;
         ListaEstados U;
         
@@ -61,9 +43,9 @@ public class AlgSubconjuntos {
             ListaEstados T = estadoSinMarcar();
             T.setMarcado(true);
             
-            it = AFN.getAlpha().iterator();
-            while(it.hasNext()){
-                simbolo = new Token((String)it.next());
+            iterdor = AFN.getAlpha().iterator();
+            while(iterdor.hasNext()){
+                simbolo = new Token((String)iterdor.next());
                 U = e_cerradura(mover(T, simbolo));
                 if(U == null){
                     continue;
@@ -83,13 +65,12 @@ public class AlgSubconjuntos {
         return this.dtrans;
     }
     
-    
     /**
-     * Ejecuta el algoritmo "e_cerradura(s)"
-     * En donde a partir de un estado s, retorna una lista de estados
-     * que se forma de recorrer desde el estado s por transiciones vacias.
      *
-     **/
+     * @param s
+     * @param listaActual
+     * @return
+     */
     public ListaEstados e_cerradura(Estado s, ListaEstados listaActual) {
         Iterator it = s.getEnlaces().getIterator();
         ListaEstados listaNueva = null;
@@ -105,14 +86,11 @@ public class AlgSubconjuntos {
         return listaActual;
     }
     
-    
     /**
-     *   Implementacion de e_cerradura(ListaEstados) del Algoritmo de Subconjuntos.
-     *   Recibe una lista de estados y por cada estado aplica el e_cerradura(estado), 
-     * es decir; por cada estado de la lista recibida se recorre recursivamente por 
-     * los enlaces "vacio" y se genera una nueva lista.
      *
-     **/
+     * @param T
+     * @return
+     */
     public ListaEstados e_cerradura(ListaEstados T){
         if(T == null){
             return null;
@@ -130,6 +108,12 @@ public class AlgSubconjuntos {
         return lista_ret;
     }
     
+    /**
+     *
+     * @param T
+     * @param a
+     * @return
+     */
     public ListaEstados mover(ListaEstados T, Token a){
         Iterator itEstados = null; 
         Iterator itEnlaces = null;
@@ -156,9 +140,6 @@ public class AlgSubconjuntos {
         }
     }
 
-    /***
-     *  Dice si existen estados que no fueron marcados.
-     */
     private boolean hayEstadosSinMarcar(){
         Iterator it = Destados.iterator();
         ListaEstados list_est;
@@ -171,7 +152,7 @@ public class AlgSubconjuntos {
         return false;
     }
     
-    private ListaEstados estadoSinMarcar() throws AutomataException{
+    private ListaEstados estadoSinMarcar() throws Exception{
         Iterator it = Destados.iterator();
         ListaEstados list_est;
         while (it.hasNext()){
@@ -180,15 +161,9 @@ public class AlgSubconjuntos {
                 return list_est;
             }
         }
-        throw new AutomataException("No hay Lista de Estados sin marcar en Destados.");
+        throw new Exception("No hay Lista de Estados sin marcar en Destados.");
     }
-    
-    
-    /***
-     * Metodo que retorna el id de la lista de estados U dentro de 
-     * Destados, si es que U no esta en la lista de estados retorna -1.
-     *
-     */
+
     private int estaEnDestados(ListaEstados U){
         Iterator it = Destados.iterator();
         ListaEstados tmp;
@@ -202,6 +177,12 @@ public class AlgSubconjuntos {
     }
     
 
+    /**
+     *
+     * @param A
+     * @param B
+     * @return
+     */
     public static ListaEstados concatListas(ListaEstados A, ListaEstados B){
         ListaEstados ret = new ListaEstados();
         Iterator it;
@@ -234,12 +215,8 @@ public class AlgSubconjuntos {
         return ret;
     }
     
-    
-
     /**
-     * Metodo estatico que recibe un AFD y retorna un nuevo AFD sin los estados
-     * inalcanzables.
-     * Necesita del metodo estatico "recorrer"
+     *
      * @param AFD
      * @return
      */
@@ -249,8 +226,8 @@ public class AlgSubconjuntos {
         visitarRecursivo(inicial);
         
         Automata AFDNEW = new Automata();
-        AFDNEW.setAlpha(AFD.getAlpha());
-        AFDNEW.setRegex(AFD.getRegex());
+        AFDNEW.setAlfabeto(AFD.getAlpha());
+        AFDNEW.setExpresion(AFD.getRegex());
                 
         Iterator it = AFD.getEstados().getIterator();
         while(it.hasNext()){
@@ -270,11 +247,9 @@ public class AlgSubconjuntos {
         
         return AFDNEW;
     }
-    
-    
+
     /**
-     * Funcion que marca como visitado un nodo con sus respectivos 
-     * hijos, lo hace recursivamente.
+     *
      * @param actual
      */
     public static void visitarRecursivo(Estado actual){
@@ -287,5 +262,4 @@ public class AlgSubconjuntos {
             }
         }
     }
-    
 }

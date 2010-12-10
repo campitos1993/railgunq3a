@@ -1,15 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * About2.java
- *
- * Created on 30/11/2010, 10:04:25 PM
- */
-
-package app;
+package interfaz;
 
 /**
  *

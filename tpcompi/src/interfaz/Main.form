@@ -182,13 +182,13 @@
                           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                           <Component id="Exp_jLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="Exp_jTextField" pref="363" max="32767" attributes="0"/>
+                          <Component id="jTextFieldExpReg" pref="363" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Component id="ABC_jLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="ABC_jTextField" pref="408" max="32767" attributes="0"/>
+                          <Component id="jTextFieldABC" pref="408" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="1">
                           <EmptySpace max="-2" attributes="0"/>
@@ -211,11 +211,11 @@
                   <EmptySpace min="5" pref="5" max="5" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="Exp_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="Exp_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldExpReg" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="11" pref="11" max="11" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="ABC_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldABC" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="ABC_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -236,14 +236,14 @@
             <Property name="text" type="java.lang.String" value="Expresion Regular:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="Exp_jTextField">
+        <Component class="javax.swing.JTextField" name="jTextFieldExpReg">
         </Component>
         <Component class="javax.swing.JLabel" name="ABC_jLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Alfabeto:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="ABC_jTextField">
+        <Component class="javax.swing.JTextField" name="jTextFieldABC">
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox1">
           <Properties>
@@ -367,6 +367,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFN_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -416,6 +419,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFD_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -465,6 +471,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="this.AFDM_jTable.setModel(new javax.swing.table.DefaultTableModel(&#xa;            new Object [][] {&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null},&#xa;                {null, null, null, null}&#xa;            },&#xa;            new String [] {&#xa;                &quot;ESTADOS&quot;, &quot;Alfabeto1&quot;, &quot;Alfabeto2&quot;, &quot;Alfabeto3&quot;&#xa;            }&#xa;        ));"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

@@ -1,6 +1,5 @@
-package afgenjava;
+package automatas;
 
-import exceptions.AutomataException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -8,58 +7,59 @@ import java.util.Iterator;
 
 /**
  *
- * @author Cristhian Parra ({@link cdparra@gmail.com})
- * @author Fernando Mancia ({@link fernandomancia@gmail.com})
+ * @author Administrator
  */
 public class ListaEstados extends ArrayList<Estado>{
 
-    /**
-     * Identificador de la Lista de estados
-     */
-    private int id; 
+    private int id;
+    private boolean marcado;
     
     /**
-     * Establecer el identificador de listado
-     * @param id Identificador del conjunto de estados.
+     *
+     * @param id
      */
     public void setId(int id) {
         this.id = id;
     }
     
     /**
-     * Obtener el id del conjunto de estados.
-     * @return Identificador del conjunto de estados.
+     *
+     * @return
      */
     public int getId() {
         return this.id;
     }
-    
+
     /**
-     * Insertar un nuevo estado a la lista
-     * @param e Estado a insertar.
+     *
+     * @param e
      */
     public void insertar(Estado e) {
         this.add(e);
     }
     
     /**
-     * Eliminar un estado del conjunto.
-     * @param e Estado a eliminar
+     *
+     * @param e
      */
     public void borrar(Estado e) {
         this.remove(this.getEstadoById(e.getId()));
     }
     
     /**
-     * Obtener un estado de la lista. Por convención, el index de cada estado
-     * será igual a su Id. 
-     * @param index Indice del arraylist donde está almacenado el estado a obtener.
-     * @return El estado almacenado en la posición index.
+     *
+     * @param index
+     * @return
      */
     public Estado getEstado(int index){
         return this.get(index);
     }
     
+    /**
+     *
+     * @param index
+     * @return
+     */
     public Estado getEstadoById(int index) {
         Iterator it = this.getIterator();
         while(it.hasNext()){
@@ -70,26 +70,25 @@ public class ListaEstados extends ArrayList<Estado>{
         }
         throw new IndexOutOfBoundsException(" No existe en esta lista un Estado con id = " + index);        
     }
-    
+
     /**
-     * Obtener la cantidad de estados de la lista
-     * @return Número de estados de la lista
+     *
+     * @return
      */
     public int cantidad() {
         return this.size();
     }
-    
+
     /**
-     * Devuelve un iterador para recorrer el listado de estados.
-     * @return Iterador sobre el conjunto de estados.
+     *
+     * @return
      */
     public Iterator <Estado> getIterator() {
         return this.iterator();
     }
-    
+
     /**
-     * Con este método, se vuelven a marcar todos los estados de la lista
-     * como no visitados. 
+     *
      */
     public void resetVisitas() {
         for (int i = 0; i < cantidad(); i++) {
@@ -98,19 +97,23 @@ public class ListaEstados extends ArrayList<Estado>{
     }
 
     /**
-     * Método que permite verificar si el estado e pertenece o no 
-     * a la lista de estados.
-     * @param e Estado para el cual queremos verificar la condición de pertenencia
-     * @return True o False dependiendo de si el estado pertenece o no
+     *
+     * @param e
+     * @return
      */
-    public boolean contiene(Estado e) {        
+    public boolean contiene(Estado e) {
         if (this.contains(e)) {
                 return true;
         }        
         return false;
     }
     
-    public Estado getEstadoInicial() throws AutomataException{
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public Estado getEstadoInicial() throws Exception{
         int indice_ini = 0;
         int cant_iniciales = 0;
         for (int i = 0; i < cantidad(); i++) {
@@ -122,11 +125,16 @@ public class ListaEstados extends ArrayList<Estado>{
         if(cant_iniciales == 1){
             return getEstado(indice_ini);
         }else{
-            throw new AutomataException("Solo debe haber un estado incial, y en esta lista existen "+ cant_iniciales);
+            throw new Exception("Solo debe haber un estado incial, y en esta lista existen "+ cant_iniciales);
         }
     }
     
-    public Estado getEstadoFinal() throws AutomataException{
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public Estado getEstadoFinal() throws Exception{
         int indice_fin = 0;
         int cant_finales = 0;
         for (int i = 0; i < cantidad(); i++) {
@@ -138,14 +146,19 @@ public class ListaEstados extends ArrayList<Estado>{
         if(cant_finales == 1){
             return getEstado(indice_fin);
         }else{
-            throw new AutomataException("Este metodo se usa cuando existe un solo " +
+            throw new Exception("Este metodo se usa cuando existe un solo " +
                     "estado final y en esta lista existen " + cant_finales + 
                     ". Utilize el metodo getEstadosFinales");
         }    
     }
 
     
-    public ListaEstados getEstadosFinales() throws AutomataException{
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public ListaEstados getEstadosFinales() throws Exception{
         ListaEstados nuevaLista = new ListaEstados();
         for (int i = 0; i < cantidad(); i++) {
             if(getEstado(i).isEstadofinal()){
@@ -155,8 +168,11 @@ public class ListaEstados extends ArrayList<Estado>{
         return nuevaLista;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean contieneInicial(){
-        //verificar q contenga un estado inicial
         Estado ini = null;
         try{
             ini = getEstadoInicial();
@@ -166,11 +182,15 @@ public class ListaEstados extends ArrayList<Estado>{
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean contieneFinal() {
         ListaEstados fin;
         try {
             fin = getEstadosFinales();
-        } catch (AutomataException ex) {
+        } catch (Exception ex) {
             return false;
         }
         
@@ -181,11 +201,10 @@ public class ListaEstados extends ArrayList<Estado>{
         }
     }
     
-    
     /**
-     * Método para ordenar los estados de la lista
+     *
      */
-    public void ordenar() {       
+    public void ordenar() {
         
         Estado a[] = new Estado[1]; 
         
@@ -200,35 +219,21 @@ public class ListaEstados extends ArrayList<Estado>{
             this.add(a[i]); 
         }
     }
-    
+
     /**
-     * Método heredado reescrito para comparar dos listas de estados. 
-     * 
-     * Dos listas de estados son iguales si tienen la misma cantidad de elementos 
-     * y si los mismos son iguales en ambas listas. 
-     * 
-     * @param o ListaEstados con el que se comparará la lista actual.
-     * @return <ul> <li><b>0 (Cero)</b> si son  iguales                       </li>
-     *              <li><b>1 (Uno)</b> si Estado es mayor que <b>e</b>        </li>
-     *              <li><b>-1 (Menos Uno)</b> si Estado es menor que <b>e</b> </li>
-     *         </ul>.
+     *
+     * @param o
+     * @return
      */
     public int compareTo(Object o) {
         
         int result = -1; 
-        
         ListaEstados otro = (ListaEstados) o;
         
-        //Se ordenan ambas Listas
         otro.ordenar();
         this.ordenar();
-        
-        // comparación de cantidad de estados
         if (this.cantidad() == otro.cantidad()) {
-            
-            // comparación uno a uno
             for (int i = 0; i < this.cantidad(); i++) {
-                
                 Estado a = this.getEstado(i);
                 try{
                     otro.getEstadoById(a.getId());    
@@ -236,58 +241,24 @@ public class ListaEstados extends ArrayList<Estado>{
                     return -1;
                 }
             }
-            
-            result = 0; //Si llego hasta aqui es xq los elementos son iguales
+            result = 0;
         }
-        
-        return result;
-    }
-    
-    /**
-     * Imprime en una larga cadena toda la lista de estados. 
-     * @return Un String que contiene la representación en String de
-     *         la lista de estados. 
-     */
-    public String imprimir() {
-        
-        String result = " ";
-        
-        result = result + this.getId() + " = { ";
-        
-        for (int i = 0; i < this.cantidad(); i++) {
-            
-            result = result + ( this.get(i) ).getId();
-            
-            if (!(i == (this.cantidad()-1))) {
-                result = result + ", ";
-            }
-        }
-        
-        result = result + " } ";
-        
         return result;
     }
 
     /**
-     * Holds value of property marcado.
-     */
-    private boolean marcado;
-
-    /**
-     * Getter for property marcado.
-     * @return Value of property marcado.
+     *
+     * @return
      */
     public boolean isMarcado() {
         return this.marcado;
     }
 
     /**
-     * Setter for property marcado.
-     * @param marcado New value of property marcado.
+     *
+     * @param marcado
      */
     public void setMarcado(boolean marcado) {
         this.marcado = marcado;
     }
-
-
 }

@@ -1,28 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package interfaz;
 
-/*
- * Main.java
- *
- * Created on 29/11/2010, 10:54:39 AM
- */
-
-package app;
-
-import afgenjava.AlgMinimizacion;
-import afgenjava.AlgSubconjuntos;
-import afgenjava.Automata;
-import afgenjava.Dtrans;
-import afgenjava.TipoAutomata;
-import exceptions.AutomataException;
+import automatas.MinimizacionEstados;
+import automatas.Subconjuntos;
+import automatas.Automata;
+import automatas.Dtrans;
+import automatas.TipoAutomata;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import traductor.Analizador;
+import analizadorlexicosintactico.AnalizadorSintactico;
 
 /**
  *
@@ -30,23 +18,12 @@ import traductor.Analizador;
  */
 public class Main extends javax.swing.JFrame {
 
-    /* Atributos */
+    private Automata afn;
+    private Automata afd;
+    private Automata afdMin;
 
-    //automatas
-    private Automata AFN;
-    private Automata AFD;
-    private Automata AFDMin;
-
-    //tablas de transiciones
-    private Dtrans DT_AFN;
-    private Dtrans DT_AFD;
-    private Dtrans DT_AFDMin;
-
-    //menu about para la GUI
-    private Acerca about;
-    //para dibujar
-    private DibujarAutomata graphics;
-    //validacion
+    private Acerca acerca;
+    private DibujarAutomata dibujar;
     private Validar validar;
 
     //abecedarios
@@ -54,7 +31,9 @@ public class Main extends javax.swing.JFrame {
     private String A_Z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private String dig = "0123456789";
 
-    /** Creamos la instancia del main */
+    /**
+     *
+     */
     public Main() {
         initComponents();
     }
@@ -70,9 +49,9 @@ public class Main extends javax.swing.JFrame {
 
         Editor = new javax.swing.JPanel();
         Exp_jLabel = new javax.swing.JLabel();
-        Exp_jTextField = new javax.swing.JTextField();
+        jTextFieldExpReg = new javax.swing.JTextField();
         ABC_jLabel = new javax.swing.JLabel();
-        ABC_jTextField = new javax.swing.JTextField();
+        jTextFieldABC = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
@@ -154,12 +133,12 @@ public class Main extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(Exp_jLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Exp_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
+                        .addComponent(jTextFieldExpReg, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
                     .addGroup(EditorLayout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addComponent(ABC_jLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ABC_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                        .addComponent(jTextFieldABC, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
                     .addGroup(EditorLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jCheckBox1)
@@ -177,10 +156,10 @@ public class Main extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(EditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Exp_jLabel)
-                    .addComponent(Exp_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldExpReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(EditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ABC_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldABC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ABC_jLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(EditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -206,6 +185,17 @@ public class Main extends javax.swing.JFrame {
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        this.AFN_jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
         jScrollPane1.setViewportView(AFN_jTable);
@@ -237,6 +227,17 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        this.AFD_jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
+            }
+        ));
         jScrollPane3.setViewportView(AFD_jTable);
 
         javax.swing.GroupLayout AFD_jPanelLayout = new javax.swing.GroupLayout(AFD_jPanel);
@@ -264,6 +265,17 @@ public class Main extends javax.swing.JFrame {
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        this.AFDM_jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
         jScrollPane4.setViewportView(AFDM_jTable);
@@ -421,61 +433,50 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
-        String expresion = Exp_jTextField.getText();
-        String alfabeto = ABC_jTextField.getText();
+        String expresion = jTextFieldExpReg.getText();
+        String alfabeto = jTextFieldABC.getText();
         boolean error = false;
 
-        // Check entries
         if (expresion.compareTo("") == 0) {
             JOptionPane.showMessageDialog(this,
                 "Debe insertar una Expresion Regular",
                 "No válido", JOptionPane.ERROR_MESSAGE);
-            Exp_jTextField.requestFocus();
+            jTextFieldExpReg.requestFocus();
             return;
         } else if (alfabeto.compareTo("") == 0) {
             JOptionPane.showMessageDialog(this,
                 "Debe insertar el Alfabeto",
                 "No válido", JOptionPane.ERROR_MESSAGE);
-            ABC_jTextField.requestFocus();
+            jTextFieldABC.requestFocus();
             return;
         } else {
-            //this.bloquearControles();
-            // Procesar la expresión regular y Generar el AFN, el AFD y el AFDMínimos
-            Analizador traductor = new Analizador(expresion, alfabeto);
-            error = traductor.isHayErrores();
-            // 1. Generar el AFN
+            AnalizadorSintactico analizador = new AnalizadorSintactico(expresion, alfabeto);
+            error = analizador.isHayErrores();
             if (error) {
                 JOptionPane.showMessageDialog(this,
-                    traductor.getErrMsg(),
+                    analizador.getErrMsg(),
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                this.setAFN(traductor.traducir());
+                this.setAFN(analizador.traducir());
             }
-            error = traductor.isHayErrores();
-            // 1.2. Verificar si hubieron errores.
+            error = analizador.isHayErrores();
             if (error) {
                 JOptionPane.showMessageDialog(this,
-                    traductor.getErrMsg(),
+                    analizador.getErrMsg(),
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                // 2. Generar el AFD
-                AlgSubconjuntos algSub;
+                Subconjuntos algSub;
                 Dtrans dtran;
                 try {
-                    algSub = new AlgSubconjuntos(this.AFN);
+                    algSub = new Subconjuntos(this.afn);
                     dtran = algSub.ejecutar();
-                    this.AFD = dtran.convertAutomata();
-                    this.AFD = AlgSubconjuntos.eliminar_estados_inalcanzables(this.AFD);
-                    this.AFD.setAlpha(this.AFN.getAlpha());
-                    this.AFD.setRegex(expresion);
-                    this.AFD.setTipo(TipoAutomata.AFD);
-                } catch (AutomataException ex) {
-                    JOptionPane.showMessageDialog(this,
-                        ex.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    this.afd = dtran.convertAutomata();
+                    this.afd = Subconjuntos.eliminar_estados_inalcanzables(this.afd);
+                    this.afd.setAlfabeto(this.afn.getAlpha());
+                    this.afd.setExpresion(expresion);
+                    this.afd.setTipo(TipoAutomata.AFD);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
@@ -483,22 +484,12 @@ public class Main extends javax.swing.JFrame {
                     return;
                 }
                 try {
-                    // 3. Generar el AFDMínimo
-                    AlgMinimizacion minimize = new AlgMinimizacion(this.AFD);
-                    this.AFDMin = minimize.minimizar();
-                    this.AFDMin.eliminar_estados_muertos();
-                    this.AFDMin.setAlpha(this.AFN.getAlpha());
-                    this.AFDMin.setRegex(expresion);
-                    this.AFDMin.setTipo(TipoAutomata.AFDMin);
-                    // 4. Poblar las tablas de la ventana principal
-                    this.cargarTabla(AFN_jTable, this.AFN);
-                    this.cargarTabla(AFD_jTable, this.AFD);
-                    this.cargarTabla(AFDM_jTable, this.AFDMin);
-                } catch (AutomataException ex) {
-                    JOptionPane.showMessageDialog(this,
-                        ex.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    MinimizacionEstados minimize = new MinimizacionEstados(this.afd);
+                    this.afdMin = minimize.minimizar();
+                    this.afdMin.eliminar_estados_muertos();
+                    this.afdMin.setAlfabeto(this.afn.getAlpha());
+                    this.afdMin.setExpresion(expresion);
+                    this.afdMin.setTipo(TipoAutomata.AFDMin);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
@@ -507,6 +498,9 @@ public class Main extends javax.swing.JFrame {
                 }
            }
         }
+        this.cargarTabla(AFN_jTable, this.afn);
+        this.cargarTabla(AFD_jTable, this.afd);
+        this.cargarTabla(AFDM_jTable, this.afdMin);
         this.unlock();
         JOptionPane.showMessageDialog(this,
             "Expresion Regular procesada con éxito",
@@ -514,11 +508,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_AceptarActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        String temp = ABC_jTextField.getText();
+        String temp = jTextFieldABC.getText();
         if(jCheckBox1.isSelected()){
             temp = temp + a_z;
-            ABC_jTextField.setText(temp);
-            ABC_jTextField.setEditable(false);
+            jTextFieldABC.setText(temp);
+            jTextFieldABC.setEditable(false);
         } else {
             int ind = temp.lastIndexOf(a_z);
             int end = a_z.length()-1 + ind;
@@ -527,18 +521,18 @@ public class Main extends javax.swing.JFrame {
                 nuevoTexto = nuevoTexto + temp.substring(0, ind);
             if(end+1 < temp.length())
                 nuevoTexto = nuevoTexto + temp.substring(end+1, temp.length());
-            ABC_jTextField.setText(nuevoTexto);
+            jTextFieldABC.setText(nuevoTexto);
             if(jCheckBox2.isSelected()==false && jCheckBox3.isSelected()==false)
-                ABC_jTextField.setEditable(true);
+                jTextFieldABC.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-        String temp = ABC_jTextField.getText();
+        String temp = jTextFieldABC.getText();
         if(jCheckBox2.isSelected()){
             temp = temp + A_Z;
-            ABC_jTextField.setText(temp);
-            ABC_jTextField.setEditable(false);
+            jTextFieldABC.setText(temp);
+            jTextFieldABC.setEditable(false);
         } else {
             int ind = temp.lastIndexOf(A_Z);
             int end = A_Z.length()-1 + ind;
@@ -547,18 +541,18 @@ public class Main extends javax.swing.JFrame {
                 nuevoTexto = nuevoTexto + temp.substring(0, ind);
             if(end+1 < temp.length())
                 nuevoTexto = nuevoTexto + temp.substring(end+1, temp.length());
-            ABC_jTextField.setText(nuevoTexto);
+            jTextFieldABC.setText(nuevoTexto);
             if(jCheckBox1.isSelected()==false && jCheckBox3.isSelected()==false)
-                ABC_jTextField.setEditable(true);
+                jTextFieldABC.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
-        String temp = ABC_jTextField.getText();
+        String temp = jTextFieldABC.getText();
         if(jCheckBox3.isSelected()){
             temp = temp + dig;
-            ABC_jTextField.setText(temp);
-            ABC_jTextField.setEditable(false);
+            jTextFieldABC.setText(temp);
+            jTextFieldABC.setEditable(false);
         } else {
             int ind = temp.lastIndexOf(dig);
             int end = dig.length()-1 + ind;
@@ -567,9 +561,9 @@ public class Main extends javax.swing.JFrame {
                 nuevoTexto = nuevoTexto + temp.substring(0, ind);
             if(end+1 < temp.length())
                 nuevoTexto = nuevoTexto + temp.substring(end+1, temp.length());
-            ABC_jTextField.setText(nuevoTexto);
+            jTextFieldABC.setText(nuevoTexto);
             if(jCheckBox1.isSelected()==false && jCheckBox2.isSelected()==false)
-                ABC_jTextField.setEditable(true);
+                jTextFieldABC.setEditable(true);
         }
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
@@ -581,7 +575,7 @@ public class Main extends javax.swing.JFrame {
         if(!Validar.isEnabled())
             return;
         if(this.validar == null) {
-            this.validar = new Validar(Exp_jTextField.getText(),ABC_jTextField.getText(),this.AFD);
+            this.validar = new Validar(jTextFieldExpReg.getText(),jTextFieldABC.getText(),this.afd);
         }
         this.validar.setVisible(true);
     }//GEN-LAST:event_ValidarActionPerformed
@@ -591,23 +585,22 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirActionPerformed
 
     private void AyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AyudaActionPerformed
-        if (about == null) {
-            about = new Acerca();
+        if (acerca == null) {
+            acerca = new Acerca();
         }
-        about.setEnabled(true);
-        about.setVisible(true);
+        acerca.setVisible(true);
     }//GEN-LAST:event_AyudaActionPerformed
 
     private void Dibujar_AFDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Dibujar_AFDMActionPerformed
-        this.viewGraphics(this.AFDMin);
+        this.graficarAutomata(this.afdMin);
 }//GEN-LAST:event_Dibujar_AFDMActionPerformed
 
     private void Dibujar_AFDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Dibujar_AFDActionPerformed
-        this.viewGraphics(this.AFD);
+        this.graficarAutomata(this.afd);
 }//GEN-LAST:event_Dibujar_AFDActionPerformed
 
     private void Dibujar_AFNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Dibujar_AFNActionPerformed
-        this.viewGraphics(this.AFN);
+        this.graficarAutomata(this.afn);
 }//GEN-LAST:event_Dibujar_AFNActionPerformed
 
     private void NuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NuevoMouseClicked
@@ -637,8 +630,13 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+    /**
+     *
+     * @param Tabla
+     * @param automata
+     */
     public void cargarTabla(JTable Tabla, Automata automata) {
-        AutomataTable tmodel = new AutomataTable(automata);
+        TabladelAutomata tmodel = new TabladelAutomata(automata);
         tmodel.arreglarObjetosNulos();
         Tabla.setModel(tmodel);
         this.resetTablaRenderer(Tabla);
@@ -659,79 +657,63 @@ public class Main extends javax.swing.JFrame {
         Tabla.getColumnModel().getColumn(0).setCellRenderer(cr);
     }
 
+    /**
+     *
+     * @return
+     */
     public Automata getAFN() {
-        return AFN;
+        return afn;
     }
 
+    /**
+     *
+     * @param AFN
+     */
     public void setAFN(Automata AFN) {
-        this.AFN = AFN;
+        this.afn = AFN;
     }
 
+    /**
+     *
+     * @return
+     */
     public Automata getAFD() {
-        return AFD;
+        return afd;
     }
 
+    /**
+     *
+     * @param AFD
+     */
     public void setAFD(Automata AFD) {
-        this.AFD = AFD;
+        this.afd = AFD;
     }
 
+    /**
+     *
+     * @return
+     */
     public Automata getAFDMin() {
-        return AFDMin;
+        return afdMin;
     }
 
+    /**
+     *
+     * @param AFDMin
+     */
     public void setAFDMin(Automata AFDMin) {
-        this.AFDMin = AFDMin;
+        this.afdMin = AFDMin;
     }
 
-    public Dtrans getDT_AFN() {
-        return DT_AFN;
-    }
-
-    public void setDT_AFN(Dtrans DT_AFN) {
-        this.DT_AFN = DT_AFN;
-    }
-
-    public Dtrans getDT_AFD() {
-        return DT_AFD;
-    }
-
-    public void setDT_AFD(Dtrans DT_AFD) {
-        this.DT_AFD = DT_AFD;
-    }
-
-    public Dtrans getDT_AFDMin() {
-        return DT_AFDMin;
-    }
-
-    public void setDT_AFDMin(Dtrans DT_AFDMin) {
-        this.DT_AFDMin = DT_AFDMin;
-    }
-
-
-    public JTable resetearTabla(JTable tabla){
-        //JTable tabla =  new javax.swing.JTable();
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        return tabla;
-    }
     private void lock(){
         Dibujar.setEnabled(false);
         Validar.setEnabled(false);
-        Exp_jTextField.setText("");
-        Exp_jTextField.setEditable(true);
-        Exp_jTextField.setEnabled(true);
-        ABC_jTextField.setText("");
-        ABC_jTextField.setEditable(true);
-        ABC_jTextField.setEnabled(true);
+        jTextFieldExpReg.setText("");
+        jTextFieldExpReg.setEditable(true);
+        jTextFieldExpReg.setEnabled(true);
+        jTextFieldABC.setText("");
+        jTextFieldABC.setEditable(true);
+        jTextFieldABC.setEnabled(true);
         Aceptar.setEnabled(true);
         jCheckBox1.setEnabled(true);
         jCheckBox2.setEnabled(true);
@@ -740,13 +722,6 @@ public class Main extends javax.swing.JFrame {
         jCheckBox2.setSelected(false);
         jCheckBox3.setSelected(false);
         validar = null;
-
-        //resetear la tabla
-        /*
-        resetearTabla(this.AFD_jTable);
-        resetearTabla(this.AFD_jTable);
-        resetearTabla(this.AFDM_jTable);
-        */
         
         this.AFN_jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -756,7 +731,7 @@ public class Main extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
         this.AFD_jTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -767,7 +742,7 @@ public class Main extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
 
@@ -779,7 +754,7 @@ public class Main extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
         
@@ -788,29 +763,28 @@ public class Main extends javax.swing.JFrame {
     private void unlock(){
         Dibujar.setEnabled(true);
         Validar.setEnabled(true);
-        Exp_jTextField.setEditable(false);
-        ABC_jTextField.setEditable(false);
+        jTextFieldExpReg.setEditable(false);
+        jTextFieldABC.setEditable(false);
         Aceptar.setEnabled(false);
         jCheckBox1.setEnabled(false);
         jCheckBox2.setEnabled(false);
         jCheckBox3.setEnabled(false);
     }
 
-    private void viewGraphics(Automata automata) {
-        if(this.graphics==null){
-            this.graphics = new DibujarAutomata(automata);
-            this.graphics.setExpresion(Exp_jTextField.getText());
-            this.graphics.setVisible(true);
-            this.graphics.toFront();
+    private void graficarAutomata(Automata automata) {
+        if(this.dibujar==null){
+            this.dibujar = new DibujarAutomata(automata);
+            this.dibujar.setExpresion(jTextFieldExpReg.getText());
+            this.dibujar.setVisible(true);
+            this.dibujar.toFront();
         } else {
-            this.graphics = null;
-            this.viewGraphics(automata);
+            this.dibujar = null;
+            this.graficarAutomata(automata);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ABC_jLabel;
-    private javax.swing.JTextField ABC_jTextField;
     private javax.swing.JPanel AFDM_jPanel;
     private javax.swing.JTable AFDM_jTable;
     private javax.swing.JPanel AFD_jPanel;
@@ -825,7 +799,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem Dibujar_AFN;
     private javax.swing.JPanel Editor;
     private javax.swing.JLabel Exp_jLabel;
-    private javax.swing.JTextField Exp_jTextField;
     private javax.swing.JPanel Matriz;
     private javax.swing.JTabbedPane Matriz_jTabbedPane1;
     private javax.swing.JMenuBar Menu;
@@ -839,6 +812,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextField jTextFieldABC;
+    private javax.swing.JTextField jTextFieldExpReg;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -1,26 +1,16 @@
-package traductor;
+package analizadorlexicosintactico;
 
 /**
- * Clase que encapsula a cada componente enviado desde el analizador léxico 
- * al analizador sintáctico para su procesamiento. <br> <br>
  *
- * @author Cristhian Parra ({@link cdparra@gmail.com})
- * @author Fernando Mancía ({@link fernandomancia@gmail.com})
+ * @author Administrator
  */
 public class Token implements Comparable<Token> {
-    
-    
     private TipoToken tipo;
-    
-    
     private String valor;
     
-    
     /**
-     * Constructor principal del Token a partir del símbolo que se le pasa. Se
-     * asume que el símbolo es válido ya que se deja la validcación al analizador
-     * léxico. 
-     * @param tipo Indica el tipo de token definidas por el enum TipoToken. 
+     *
+     * @param simbolo
      */
     public Token(String simbolo) {
         this.valor = simbolo;
@@ -28,15 +18,15 @@ public class Token implements Comparable<Token> {
     }
 
     /**
-     * Función que retorna el tipo de token actual
-     * @return Retorna el tipo de token
+     *
+     * @return
      */
     public TipoToken getTipo() {
         return tipo;
     }
 
     /**
-     * Método que retorna el valor (char) del token actual. 
+     *
      * @return
      */
     public String getValor() {
@@ -44,31 +34,22 @@ public class Token implements Comparable<Token> {
     }
 
     /**
-     * Establece el tipo de token
-     * @param tipo Tipo del token actual
+     *
+     * @param tipo
      */
     public void setTipo(TipoToken tipo) {
         this.tipo = tipo;
     }
 
     /**
-     * Valor (en char) del tipo de token actual
-     * @param valor Caracter que representa el tipo de token
+     *
+     * @param valor
      */
     public void setValor(String valor) {
         this.valor = valor;
         this.setTipo(valor);
     }
     
-    /**
-     * Método abstracto de la clase Comparable implementado por Token para poder
-     * utilizar el operador == para las comparaciones <br><br>
-     * 
-     * @param t Token con el que se comparará el actual. 
-     * @return <ul> <li><b>0 (Cero)</b> si son  iguales         </li>
-     *              <li><b>-1 (Menos Uno)</b> si no son iguales </li>
-     *         </ul>
-     */
     public int compareTo(Token t) {
         if (this.getTipo() == t.getTipo() 
                 && this.getValor().compareTo(t.getValor()) == 0 ) {
@@ -86,10 +67,10 @@ public class Token implements Comparable<Token> {
 
             switch (simbolo.charAt(0)) {
                 case '*':
-                    this.tipo = TipoToken.KLEENE;
+                    this.tipo = TipoToken.CERRADURAKLEENE;
                     break;
                 case '+':
-                    this.tipo = TipoToken.PLUS;
+                    this.tipo = TipoToken.CERRADURAPOSITIVA;
                     break;
                 case '?':
                     this.tipo = TipoToken.CEROUNO;
@@ -98,13 +79,13 @@ public class Token implements Comparable<Token> {
                     this.tipo = TipoToken.OR;
                     break;
                 case '(':
-                    this.tipo = TipoToken.PARI;
+                    this.tipo = TipoToken.PARENTESISABIERTO;
                     break;
                 case ')':
-                    this.tipo = TipoToken.PARD;
+                    this.tipo = TipoToken.PARENTESISCERRADO;
                     break;
                 default:
-                    this.tipo = TipoToken.ALFA;
+                    this.tipo = TipoToken.ALFABETO;
                     this.valor = simbolo;
                     break;
             }

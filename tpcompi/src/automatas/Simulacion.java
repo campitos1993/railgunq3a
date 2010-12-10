@@ -1,49 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package afgenjava;
+package automatas;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import traductor.*;
+import analizadorlexicosintactico.*;
 
 /**
  *
- * @author Cristhian Parra ({@link cdparra@gmail.com})
- * @author Fernando Mancia ({@link fernandomancia@gmail.com})
+ * @author Administrator
  */
 public class Simulacion {
 
-     // variables utilizadas en la simulación y validación de cadenas de entrada
     private String validationString;
-    
     private ArrayList<ListaEstados> estadosPathAFN;
-    
-    private ListaEstados estadosPath;     
-    
+    private ListaEstados estadosPath;
     private int currentIndex = -1;
-
     private Automata automata;
-    
-    
-    // variables auxiliares
-    
-    Stack<Estado> estadosAnt;           // conjunto actual de estados
-
-    Stack<Estado> estadosNew;           // conjunto siguiente de estados
-
-    boolean[] yaEstaEn;                 // cuales estados ya están en EstadosNew
-
-    ArrayList<Enlace> enlacesVacios;         // lista utilizada para almacenar mover[s,vacio]
-    
+    Stack<Estado> estadosAnt;
+    Stack<Estado> estadosNew;
+    boolean[] yaEstaEn;
+    ArrayList<Enlace> enlacesVacios;
     String currentCar; 
     
 
+    /**
+     *
+     */
     public Simulacion() {
     }
 
+    /**
+     *
+     * @param validationString
+     * @param automata
+     */
     public Simulacion(String validationString, Automata automata) {
         this.validationString = validationString;
         this.automata = automata;
@@ -53,13 +42,12 @@ public class Simulacion {
         this.yaEstaEn    = new boolean[automata.getEstados().size()];
         this.estadosAnt  = new Stack<Estado>();
         this.estadosNew  = new Stack<Estado>();
-
-        /* Deprecated
-        for (boolean b : this.yaEstaEn) {
-            b = false; 
-        }*/
     }
 
+    /**
+     *
+     * @return
+     */
     public Estado getEstadoFinal() {
         Estado result = null; 
         
@@ -77,11 +65,14 @@ public class Simulacion {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public Estado getEstadoPreFinal() {
         Estado result = null; 
         
         if (this.automata.getTipo() == TipoAutomata.AFN) {
-            // @TODO
         } else {
             if (estadosPath != null) {
                 int cantidad = estadosPath.size();                
@@ -94,12 +85,9 @@ public class Simulacion {
         return result;
     }
     
-    
     /**
-     * Proceso que recorre el automata para verificar si la cadena de prueba 
-     * perteneces al lenguaje descrito por la expresión regular. 
-     * @param test cadena de prueba cuya pertenencia queremos verificar
-     * @return boolean True si la cadena pertenece, false en caso contrario. 
+     *
+     * @return
      */
     public boolean validar() {
         boolean exito = true;
@@ -117,7 +105,7 @@ public class Simulacion {
         this.estadosNew.push(s);
         this.yaEstaEn[s.getId()] = true;
         
-        this.enlacesVacios = s.getEnlacesVacios(); // equivale a mover[s,(vacio)]
+        this.enlacesVacios = s.getEnlacesVacios();
         
         for (Enlace e : this.enlacesVacios) {
             Estado t = e.getDestino();
@@ -142,69 +130,51 @@ public class Simulacion {
         
         String current = this.currentCar();
         Estado result = current_state; 
-        
         Enlace path = current_state.getEnlaceSimboloFromHash(current);
-        
-        // Si no hay ningún enlace al símbolo, buscamos algún vacío. 
-        // Solo se aplica a los AFNs
+
         if (path == null && this.automata.getTipo() == TipoAutomata.AFN) {
             ArrayList<Enlace> emptys = current_state.getEnlacesVacios();
-            
             for (Enlace enlace : emptys) {                
                 Estado siguiente = enlace.getDestino();       
-                
-                // se inserta el estado a seguir en el camino de validacion
                 int indexEstado = this.estadosPath.cantidad();
                 this.estadosPath.add(siguiente);
                 result = this.validar_AFN_Backtracking(siguiente);
-                
                 if (result != null) {
                     break;
                 }
                 this.estadosPath.remove(indexEstado);
             }
-        } else {  // se encontró un enlace seguir por el símbolo y avanzamos
-            
+        } else {
             Estado siguiente = path.getDestino();        
-            
             this.estadosPath.add(siguiente);            
             this.sigCar();
-            
             result = this.validar_AFN_Backtracking(siguiente);
         }
-        
         return result;         
     }
 
     
     private boolean validar_AFN() {
         boolean exito = true; 
-        
-        AlgSubconjuntos subc = new AlgSubconjuntos(this.automata);
+        Subconjuntos subc = new Subconjuntos(this.automata);
         ListaEstados S = new ListaEstados();
         S = subc.e_cerradura(this.automata.getInicial(), S);
         String c = this.sigCar();
         
         this.estadosPathAFN.add(S);
-        
         while (c.compareToIgnoreCase("")!=0) {
             S = subc.mover(S, new Token(c));
             S = subc.e_cerradura(S);   
-            
             if (S == null || S.size() == 0) {
                 exito = false;
                 break;
             }
-                    
             this.estadosPathAFN.add(S);
-            
             c = this.sigCar(); 
         }
-        
         if (exito) {
             exito = this.contieneFinal(S);
         }
-        
         return exito; 
     }
     
@@ -212,25 +182,19 @@ public class Simulacion {
         Estado s = this.automata.getInicial();
         String c = this.sigCar();  
         boolean exito = true; 
-        
-        // empezamos a cargar el camino de la simulación
         this.estadosPath.insertar(s);
-        
         while (c.compareToIgnoreCase("")!=0) {
             s = this.mover(s, c);
             if (s == null) {
                 exito = false; 
                 break;
             }
-            
             this.estadosPath.insertar(s);
             c = this.sigCar(); 
         }
-        
         if (s != null && !s.isEstadofinal()) {
            exito = false;
         }                
-        
         return exito;
     }
     
@@ -256,34 +220,60 @@ public class Simulacion {
     }
     
     
+    /**
+     *
+     * @return
+     */
     public String getValidationString() {
         return validationString;
     }
 
+    /**
+     *
+     * @param validationString
+     */
     public void setValidationString(String validationString) {
         this.validationString = validationString;
         this.currentIndex = 0; 
         this.estadosPath = new ListaEstados();
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<ListaEstados> getEstadosPathAFN() {
         return estadosPathAFN;
     }
 
+    /**
+     *
+     * @return
+     */
     public ListaEstados getEstadosPath() {
         return estadosPath;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCurrentIndex() {
         return currentIndex;
     }
 
-    public
-
-    Automata getAutomata() {
+    /**
+     *
+     * @return
+     */
+    public Automata getAutomata() {
         return automata;
     }
 
+    /**
+     *
+     * @param automata
+     */
     public void setAutomata(Automata automata) {
         this.automata = automata;
     }
@@ -292,6 +282,10 @@ public class Simulacion {
         return this.yaEstaEn[t.getId()];
     }
     
+    /**
+     *
+     * @return
+     */
     public String getSimulationPath() {
         return this.estadosPath.toString();
     }

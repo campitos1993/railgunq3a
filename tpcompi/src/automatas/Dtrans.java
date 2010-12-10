@@ -1,41 +1,38 @@
-/*
- * Dtrans.java
- *
- * Created on 11 de noviembre de 2008, 01:03 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
+package automatas;
 
-package afgenjava;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-import traductor.Token;
+import analizadorlexicosintactico.Token;
 
 /**
  *
- * @author fmancia
+ * @author Administrator
  */
 public class Dtrans {
     Hashtable dtrans;
     
-    /** Creates a new instance of Dtrans */
+    /**
+     *
+     */
     public Dtrans() {
         dtrans = new Hashtable();
     }
-
     
+    /**
+     *
+     * @param clave
+     * @return
+     */
     public ListaEstados obtenerValor(DtransClave clave){
         return obtenerValor(clave.getIndiceEstados(), clave.getIndiceToken());
     }
     
+    /**
+     *
+     * @param lista
+     * @param token
+     * @return
+     */
     public ListaEstados obtenerValor(ListaEstados lista, Token token){
         DtransClave comparar = new DtransClave(lista, token);
         Enumeration en = dtrans.keys();
@@ -50,10 +47,19 @@ public class Dtrans {
     }
     
     
+    /**
+     *
+     * @param clave
+     * @param valor
+     */
     public void setValor(DtransClave clave, ListaEstados valor){
         dtrans.put(clave, valor);
     }
     
+    /**
+     *
+     * @return
+     */
     public Automata convertAutomata(){
         Automata a = new Automata(); 
         
@@ -69,7 +75,6 @@ public class Dtrans {
             try{
                  st_new_origen = a.getEstadoById(id_new_origen);
             }catch(Exception ex){
-                //No existe el estado entonces creamos 
                 st_new_origen = new Estado(id_new_origen, 
                                             clave.getIndiceEstados().contieneInicial(), 
                                             clave.getIndiceEstados().contieneFinal(), 
@@ -88,7 +93,6 @@ public class Dtrans {
             try{
                  st_new_dest = a.getEstadoById(id_new_dest);
             }catch(Exception ex){
-                //No existe el estado entonces creamos 
                 st_new_dest = new Estado(id_new_dest, 
                                         valor.contieneInicial(), 
                                         valor.contieneFinal(), 
@@ -102,7 +106,6 @@ public class Dtrans {
                 }
             }
 
-            //Agregamos los enlaces.
             Enlace enlace_new = new Enlace( st_new_origen, st_new_dest, 
                                             clave.getIndiceToken().getValor());
             
@@ -111,27 +114,5 @@ public class Dtrans {
                
         return a;
     }
-    
-    
-    public String imprimir(){
-        String print = "";
-        Enumeration en = dtrans.keys();
-        while(en.hasMoreElements()){
-            DtransClave clave = (DtransClave) en.nextElement();
-            ListaEstados lista = obtenerValor(clave);
-            
-            print += "\n" + clave.getIndiceEstados().imprimir() +
-                    " -#- " + clave.getIndiceToken().getValor() +
-                    " = " + lista.imprimir();
-            
-        }
-        return print;
-    }
-
-    
-    
-    
-
-   
 }
 

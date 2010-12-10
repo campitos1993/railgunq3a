@@ -1,54 +1,49 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package automatas;
 
-package afgenjava;
-
-import exceptions.AutomataException;
 import java.util.*;
 
 /**
  *
- * @author Cristhian Parra ({@link cdparra@gmail.com})
- * @author Fernando Mancia ({@link fernandomancia@gmail.com})
+ * @author Administrator
  */
-public class AlgMinimizacion {
+public class MinimizacionEstados {
 
     Automata AFD;
-    public AlgMinimizacion(Automata a){
-        this.AFD = a;
+
+    /**
+     *
+     * @param automata
+     */
+    public MinimizacionEstados(Automata automata){
+        this.AFD = automata;
     }
     
-    
-/** ALGORITMO DE MINIMIZACION 
- * Los siguientes metodos son usados en el algoritmo de minimizacion.
- * 
- **/ 
-
-    
-   public Automata minimizar() throws AutomataException{
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public Automata minimizar() throws Exception{
        ArrayList<ListaEstados> anterior = new ArrayList<ListaEstados>();
        ArrayList<ListaEstados> actual = new ArrayList<ListaEstados>();
        
-       int nro_est = 0;
-       ListaEstados nofinales = AFD.getNoFinales();
+       int numeroEstado = 0;
+       ListaEstados noFinales = AFD.getNoFinales();
        ListaEstados finales = AFD.getFinales();
        
-       if(nofinales != null && nofinales.cantidad() > 0){
-            nofinales.setId(nro_est++);
-            anterior.add(nofinales);
+       if(noFinales != null && noFinales.cantidad() > 0){
+            noFinales.setId(numeroEstado++);
+            anterior.add(noFinales);
        }
        
        if(finales != null && finales.cantidad() > 0){
-            finales.setId(nro_est++);
+            finales.setId(numeroEstado++);
             anterior.add(finales);           
        }
 
        boolean seguir = true;
        while(seguir){
-           
-           int cant =0;
+           int cant = 0;
            for(ListaEstados cadaLista: anterior){
                 Iterator it = separarGrupos(anterior, cadaLista);
                 while(it != null && it.hasNext()){
@@ -65,18 +60,13 @@ public class AlgMinimizacion {
                actual = new ArrayList<ListaEstados>();
            }
        }
-       //Fin del Algoritmo de Minimizacion.
-       
-       
-       //Ahora se convierte "actual"  en "Automata"
-       //Primero creamos los estados
+
        Automata AFDM = new Automata();
        Iterator it = actual.iterator();
        while(it.hasNext()){
             ListaEstados lest = (ListaEstados) it.next();
             Estado nuevo = new Estado(lest.getId() , false, false,false);
             
-            //Es estado inicial
             try{
                 lest.getEstadoInicial();
                 nuevo.setEstadoinicial(true);
@@ -85,7 +75,6 @@ public class AlgMinimizacion {
                 nuevo.setEstadoinicial(false);
             }
                 
-            //Es estado final
             if(lest.getEstadosFinales().cantidad() > 0){
                 nuevo.setEstadofinal(true);        
                 AFDM.getFinales().insertar(nuevo);
@@ -95,7 +84,6 @@ public class AlgMinimizacion {
             AFDM.addEstado(nuevo);
        }
        
-       //Segundo, creamos los enlaces
        it = actual.iterator();
        while(it.hasNext()){
             ListaEstados lest = (ListaEstados) it.next();
@@ -111,12 +99,16 @@ public class AlgMinimizacion {
                 estado_afdm.addEnlace(nuevo_enlace);
             }
        }
-       
        return AFDM;
    }
    
-   public Iterator separarGrupos(ArrayList<ListaEstados> todas, 
-                                ListaEstados lista){
+   /**
+    *
+    * @param todas
+    * @param lista
+    * @return
+    */
+   public Iterator separarGrupos(ArrayList<ListaEstados> todas, ListaEstados lista) {
         Hashtable listasNuevas = new Hashtable(); 
         for(Estado estado : lista){   
             String claveSimbolos = "";
@@ -142,6 +134,12 @@ public class AlgMinimizacion {
    }
    
    
+   /**
+    *
+    * @param simbolos
+    * @param estados
+    * @return
+    */
    public String generarClaveHash(String simbolos, String estados ){
        String cadenaFinal = "";
 
@@ -152,18 +150,12 @@ public class AlgMinimizacion {
             hayCambios = false;
             for (int j = 0; j < c.length - 1; j++) {
               if (c[j] > c[j + 1]) {
-                  
-                  //intercambiar(arreglo, j, j+1);
-                  //ini intercambiar
                   char tmp = c[j+1];
                   c[j+1] = c[j];
                   c[j] = tmp;
-
                   char tmpEst = est[j+1];
                   est[j+1] = est[j];
                   est[j] = tmpEst;
-                  //fin intercambiar
-                          
                   hayCambios = true;
               }
             }
@@ -172,6 +164,12 @@ public class AlgMinimizacion {
        return cadenaFinal;
    }
    
+   /**
+    *
+    * @param listas
+    * @param estado
+    * @return
+    */
    public ListaEstados enqueLista(ArrayList<ListaEstados> listas, Estado estado){
         for(ListaEstados lista : listas){
             try{
@@ -181,9 +179,4 @@ public class AlgMinimizacion {
         }
         return null;
    }
-   
-   
-
-   
-   
 }

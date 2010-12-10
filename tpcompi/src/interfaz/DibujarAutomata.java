@@ -9,15 +9,16 @@
  * Created on 30/11/2010, 11:23:17 PM
  */
 
-package app;
+package interfaz;
 
-import afgenjava.Automata;
-import afgenjava.Enlace;
-import afgenjava.Estado;
-import afgenjava.ListaEstados;
+import automatas.Automata;
+import automatas.Enlace;
+import automatas.Estado;
+import automatas.ListaEstados;
 import graphviz.GraphViz;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,11 +28,13 @@ public class DibujarAutomata extends javax.swing.JFrame {
 
     private Automata automata;
 
-    /** Creates new form DibujarAutomata */
+    /** Creates new form DibujarAutomata
+     * @param a
+     */
     public DibujarAutomata(Automata a) {
         this.automata = a;
         initComponents();
-        this.cargarAutomataGraphViz();
+        this.dibujarAutomata();
         Aceptar.requestFocus();
     }
 
@@ -120,53 +123,64 @@ public class DibujarAutomata extends javax.swing.JFrame {
     private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_AceptarActionPerformed
+    /**
+     *
+     * @param text
+     */
     public void setExpresion(String text){
         this.jTextFieldExpReg.setText(text);
     }
 
-    private void cargarAutomataGraphViz() {
+    private void dibujarAutomata() {
         this.imagen.setIcon(null);
         ImageIcon i = null;
-        i = this.dibujarNuevo();
+        i = this.obtenerImagen();
 
         if (i != null) {
             this.imagen.setIcon(i);
-        } else
-            System.out.println("ImageIcon es null");
-
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Ha ocurrido un error inesperado!",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         this.imagen.setHorizontalAlignment(JLabel.CENTER);
         this.imagen.repaint();
     }
 
-    private ImageIcon dibujarNuevo() {
-        GraphViz gv = new GraphViz();
+    private ImageIcon obtenerImagen() {
+        GraphViz graphviz = new GraphViz();
         ImageIcon icon;
-        byte [] img;
-        img = gv.dibujar(this.getDotSyntax());
-        icon = new ImageIcon(img);
+        byte [] imagenBytes;
+        imagenBytes = graphviz.dibujar(this.generarDot());
+        icon = new ImageIcon(imagenBytes);
         return icon;
     }
 
-    public String getDotSyntax(){
-        String result_header =
+    /**
+     *
+     * @return
+     */
+    public String generarDot(){
+        String cabecera =
                 "digraph finite_state_machine {\n" +
                 "\trankdir=LR;\n\toverlap=scale;\n";
 
-        String result_nodes = "\tnode [shape = circle];\n";
-        String result_edges = "";
-        String style = "";
+        String nodos = "\tnode [shape = circle];\n";
+        String arcos = "";
+        String estilos = "";
 
         ListaEstados estados = this.automata.getEstados();
 
         for (Estado e : estados) {
             if(e.isEstadofinal())
-                style = "[ shape = doublecircle ]";
+                estilos = "[ shape = doublecircle ]";
             else if (e.isEstadoinicial())
-                style = "[ label = inicio]";
+                estilos = "[ label = inicio]";
             else
-                style = "[ shape = circle ]";
+                estilos = "[ shape = circle ]";
             
-            result_nodes+="\t"+e.getId() + " "+style+"\n";
+            nodos+="\t"+e.getId() + " "+estilos+"\n";
 
             for (Enlace enlace : e.getEnlaces()) {
 
@@ -176,12 +190,11 @@ public class DibujarAutomata extends javax.swing.JFrame {
 
                 String EnlaceStyle = "[ label = \"" + label + "\" ]";
 
-                result_edges += "\t"+orig.getId() + " -> " + dest.getId() +
+                arcos += "\t"+orig.getId() + " -> " + dest.getId() +
                                 " "+EnlaceStyle+"\n";
-
             }
         }
-        String result = result_header + result_nodes + result_edges + "}";
+        String result = cabecera + nodos + arcos + "}";
         return result;
     }
 

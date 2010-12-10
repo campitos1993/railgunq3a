@@ -24,11 +24,12 @@ package graphviz;
  *                                                                            *
  ******************************************************************************
  * 
- * Modified by Cristhian Parra ({@link cdparra@gmail.com})<br>
+ * Modificado por:
+ * Marco Alvarez
+ * Sebastian Lena
  */
 
 import java.io.*;
-import java.util.*;
 
 /**
  * <dl>
@@ -61,6 +62,7 @@ import java.util.*;
 public class GraphViz {
    /**
     * Where is your dot program located? It will be called externally.
+    * Modificar para cada PC!
     */
    private static String DOT = "c:\\Program Files (x86)\\Graphviz2.26.3\\bin\\dot.exe ";
 
