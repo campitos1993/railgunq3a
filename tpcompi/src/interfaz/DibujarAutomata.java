@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * DibujarAutomata.java
- *
- * Created on 30/11/2010, 11:23:17 PM
- */
-
 package interfaz;
 
 import automatas.Automata;
@@ -21,15 +10,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
+ * Clase encargada de obtener la imagen del grafo y ponerla en pantalla
  *
- * @author Administrator
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class DibujarAutomata extends javax.swing.JFrame {
 
     private Automata automata;
 
     /** Creates new form DibujarAutomata
-     * @param a
+     * @param a Automata a Graficar
      */
     public DibujarAutomata(Automata a) {
         this.automata = a;
@@ -123,14 +114,18 @@ public class DibujarAutomata extends javax.swing.JFrame {
     private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_AceptarActionPerformed
+
     /**
-     *
-     * @param text
+     * Setea la Expresion Regular dentro del jTextField
+     * @param text Expresion Regular
      */
     public void setExpresion(String text){
         this.jTextFieldExpReg.setText(text);
     }
 
+    /*
+     * Metodo que coloca la imagen en el jLabel imagen
+     */
     private void dibujarAutomata() {
         this.imagen.setIcon(null);
         ImageIcon i = null;
@@ -148,6 +143,9 @@ public class DibujarAutomata extends javax.swing.JFrame {
         this.imagen.repaint();
     }
 
+    /*
+     * Metodo que obtiene la imagen del GraphViz
+     */
     private ImageIcon obtenerImagen() {
         GraphViz graphviz = new GraphViz();
         ImageIcon icon;
@@ -158,14 +156,11 @@ public class DibujarAutomata extends javax.swing.JFrame {
     }
 
     /**
-     *
-     * @return
+     * Genera la sintaxis para la construccion del automata mediante el Graphviz
+     * @return Sintaxis Dot
      */
     public String generarDot(){
-        String cabecera =
-                "digraph finite_state_machine {\n" +
-                "\trankdir=LR;\n\toverlap=scale;\n";
-
+        String cabecera = "digraph finite_state_machine {\n\trankdir=LR;\n\toverlap=scale;\n";
         String nodos = "\tnode [shape = circle];\n";
         String arcos = "";
         String estilos = "";

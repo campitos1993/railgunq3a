@@ -84,7 +84,12 @@ public class AnalizadorSintactico {
             if (actual.getTipo() != TipoToken.FIN) {
                 this.error = true;
                 this.errMsg = "Aun hay entrada por analizar";
+                return null;
             }
+        } else {
+            this.error = true;
+            this.errMsg = "La expresion contiene simbolos que no estan en el alfabeto";
+            return null;
         }
         this.automata.setAlfabeto(this.alfabeto);
         this.automata.setExpresion(this.expresionRegular);

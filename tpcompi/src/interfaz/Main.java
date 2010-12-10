@@ -1,5 +1,7 @@
 package interfaz;
 
+import generadortabla.TabladelAutomata;
+import generadortabla.OneColumnRenderer;
 import automatas.MinimizacionEstados;
 import automatas.Subconjuntos;
 import automatas.Automata;
@@ -13,8 +15,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import analizadorlexicosintactico.AnalizadorSintactico;
 
 /**
+ * Clase del Menu Principal
  *
- * @author Administrator
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Main extends javax.swing.JFrame {
 
@@ -32,7 +36,7 @@ public class Main extends javax.swing.JFrame {
     private String dig = "0123456789";
 
     /**
-     *
+     * Constructor por Default
      */
     public Main() {
         initComponents();
@@ -446,19 +450,25 @@ public class Main extends javax.swing.JFrame {
         String alfabeto = jTextFieldABC.getText();
         boolean error = false;
 
+        // si no se inserto una expresion regular, mensaje de error
         if (expresion.compareTo("") == 0) {
             JOptionPane.showMessageDialog(this,
                 "Debe insertar una Expresion Regular",
                 "No válido", JOptionPane.ERROR_MESSAGE);
             jTextFieldExpReg.requestFocus();
             return;
+            
+        // si no se inserto un alfabeto, mensaje de error
         } else if (alfabeto.compareTo("") == 0) {
             JOptionPane.showMessageDialog(this,
                 "Debe insertar el Alfabeto",
                 "No válido", JOptionPane.ERROR_MESSAGE);
             jTextFieldABC.requestFocus();
             return;
+
+        // genera los 3 automatas
         } else {
+            // AFN
             AnalizadorSintactico analizador = new AnalizadorSintactico(expresion, alfabeto);
             error = analizador.isHayErrores();
             if (error) {
@@ -475,6 +485,8 @@ public class Main extends javax.swing.JFrame {
                     analizador.getErrMsg(),
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
+                
+            // si no hubo error al generar el AFN, se genera el AFD
             } else {
                 Subconjuntos algSub;
                 Dtrans dtran;
@@ -492,6 +504,7 @@ public class Main extends javax.swing.JFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                // si no hubo error al generar el AFD, se genera el AFD Minimo
                 try {
                     MinimizacionEstados minimize = new MinimizacionEstados(this.afd);
                     this.afdMin = minimize.minimizar();
@@ -507,10 +520,16 @@ public class Main extends javax.swing.JFrame {
                 }
            }
         }
+
+        // carga la tabla de transiciones de los automatas
         this.cargarTabla(AFN_jTable, this.afn);
         this.cargarTabla(AFD_jTable, this.afd);
         this.cargarTabla(AFDM_jTable, this.afdMin);
+
+        // habilita las opciones de dibujar y validar
         this.unlock();
+
+        // informa del exito del procesamiento
         JOptionPane.showMessageDialog(this,
             "Expresion Regular procesada con éxito",
             "Aceptado", JOptionPane.INFORMATION_MESSAGE);
@@ -518,6 +537,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         String temp = jTextFieldABC.getText();
+        // agrega el alfabeto [abcdefghijklmnopqrstuvwxyz] y bloqueda la entrada por teclado
         if(jCheckBox1.isSelected()){
             temp = temp + a_z;
             jTextFieldABC.setText(temp);
@@ -538,6 +558,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         String temp = jTextFieldABC.getText();
+         // agrega el alfabeto [ABCDEFGHIJKLMNOPQRSTUVWXYZ] y bloqueda la entrada por teclado
         if(jCheckBox2.isSelected()){
             temp = temp + A_Z;
             jTextFieldABC.setText(temp);
@@ -558,6 +579,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         String temp = jTextFieldABC.getText();
+        // agrega el alfabeto [0123456789] y bloqueda la entrada por teclado
         if(jCheckBox3.isSelected()){
             temp = temp + dig;
             jTextFieldABC.setText(temp);
@@ -577,7 +599,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void NuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevoActionPerformed
-        this.lock();
+        this.lock(); //resetea los campos
     }//GEN-LAST:event_NuevoActionPerformed
 
     private void ValidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValidarActionPerformed
@@ -630,6 +652,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirMouseClicked
 
     private void jTextFieldABCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldABCKeyPressed
+        //si se inserto alfabeto por el teclado no se permite tildar los jCheckBox
+        // si se borro todo el contenido de jTextField se permite tildar de nuevo
         if(jTextFieldABC.getText().compareTo("")==0){
             jCheckBox1.setEnabled(true);
             jCheckBox2.setEnabled(true);
@@ -642,7 +666,9 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldABCKeyPressed
 
     private void jTextFieldABCKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldABCKeyReleased
-       if(jTextFieldABC.getText().compareTo("")==0){
+       //si se inserto alfabeto por el teclado no se permite tildar los jCheckBox
+       // si se borro todo el contenido de jTextField se permite tildar de nuevo
+        if(jTextFieldABC.getText().compareTo("")==0){
             jCheckBox1.setEnabled(true);
             jCheckBox2.setEnabled(true);
             jCheckBox3.setEnabled(true);
@@ -665,9 +691,10 @@ public class Main extends javax.swing.JFrame {
     }
 
     /**
+     * Carga los datos del automata a la tabla de transiciones
      *
-     * @param Tabla
-     * @param automata
+     * @param Tabla Jtable para el automata
+     * @param automata Automata (AFN, AFD o AFDMin)
      */
     public void cargarTabla(JTable Tabla, Automata automata) {
         TabladelAutomata tmodel = new TabladelAutomata(automata);
@@ -686,7 +713,7 @@ public class Main extends javax.swing.JFrame {
         dt.setBackground(Color.white);
         dt.setForeground(Color.black);
 
-        OneColumnRenderer cr = new OneColumnRenderer(0, Color.gray, Color.white);
+        OneColumnRenderer cr = new OneColumnRenderer(0, Color.darkGray, Color.white);
         cr.setFont(new Font("Verdana",Font.BOLD, 12));
         Tabla.getColumnModel().getColumn(0).setCellRenderer(cr);
     }

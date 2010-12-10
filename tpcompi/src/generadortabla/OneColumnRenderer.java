@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package interfaz;
+package generadortabla;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -12,8 +7,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
- * @author Cristhian Parra ({@link cdparra@gmail.com})
+ * Clase encargada del coloreo de la 1era columna
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class OneColumnRenderer extends DefaultTableCellRenderer {
 
@@ -22,20 +19,21 @@ public class OneColumnRenderer extends DefaultTableCellRenderer {
     private Color foreground;
 
     /**
-     *
+     * Constructor de la clase por Default
      */
     public OneColumnRenderer() {
         this.columna = 0;
-        this.background = Color.white;
+        this.background = Color.darkGray;
         this.foreground = Color.black;
 
     }
 
     /**
-     *
-     * @param columna
-     * @param b
-     * @param f
+     * Contructor con parametros
+     * 
+     * @param columna Columna a colorear
+     * @param b Color del background
+     * @param f Color del foreground
      */
     public OneColumnRenderer(int columna, Color b, Color f) {
         this.columna = columna;
@@ -45,7 +43,7 @@ public class OneColumnRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-        setEnabled(table == null || table.isEnabled()); // see question above
+        setEnabled(table == null || table.isEnabled()); 
 
         if ((column == this.columna)) {
             setBackground(this.background);

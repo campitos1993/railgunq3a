@@ -1,4 +1,4 @@
-package interfaz;
+package generadortabla;
 
 import automatas.*;
 import java.util.Iterator;
@@ -8,44 +8,21 @@ import javax.swing.table.AbstractTableModel;
  * Tabla de Transiciones de un automata ajustado para ser utilizado como el 
  * modelo de un componente Jtable
  * 
- * @author 
- * @author 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class TabladelAutomata extends AbstractTableModel {
 
-    /**
-     * Automata cuya tabla de tranciciones se quiere representar
-     */
     private Automata automata;
-    
-    /**
-     * Cantidad de columnas de la Tabla
-     */
     private int cantidadColumnas = 0;
-    
-    /**
-     * Cantidad de filas de la tabla
-     */
     private int cantidadFilas = 0;
-    
-    /**
-     * Matriz que contiene los data a desplegar en el JTable. 
-     */
     private Object [][] datos;
-    
-    /**
-     * Etiqueta de cada columna de la tabla
-     */
     private String [] nombresColumnas;
-    
-    /**
-     * Cuenta de simbolos del alfabeto que realmente se utilizan
-     */
     private int cantidadRealColumnas;
 
     /**
-     *
-     * @param automata
+     * Constructor de la Clase.
+     * @param automata Automata para generar la Tabla
      */
     public TabladelAutomata(Automata automata) {
         this.automata = automata;
@@ -173,21 +150,6 @@ public class TabladelAutomata extends AbstractTableModel {
         }
     }
 
-    /**
-     * Automata cuya tabla de tranciciones se quiere representar
-     */
-    Automata getAutomata() {
-        return automata;
-    }
-
-    /**
-     *
-     * @param automata
-     */
-    public void setAutomata(Automata automata) {
-        this.automata = automata;
-    }
-
     private void loadTable() {
         
         // Recorremos el automata estado a estado y en cada paso, cargamos la 
@@ -243,24 +205,5 @@ public class TabladelAutomata extends AbstractTableModel {
             }            
         }        
     }    
-    
-    @Override
-    public String toString() {
-        String result="";
-        
-        for (int i = 0; i < datos.length; i++) {
-            Object[] objects = datos[i];
-            for (int j = 0; j < objects.length; j++) {
-                Object object = objects[j];    
-                if (object != null) {
-                    result = result + ( (ListaEstados) object).toString()+"\t";
-                } else {
-                    result = result + "null\t";
-                }
-            }
-            result += "\n";
-        }
-        
-        return result; 
-    }
+
 }

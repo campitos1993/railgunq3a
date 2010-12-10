@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * Validar.java
- *
- * Created on 01-dic-2010, 13:53:14
- */
-
 package interfaz;
 
 import automatas.Automata;
@@ -17,16 +6,19 @@ import javax.swing.JOptionPane;
 
 
 /**
+ * Clase de interfaz para validar una entrada con el expresion regular
  *
- * @author 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Validar extends javax.swing.JFrame {
     private Automata AFD;
-    private Simulacion afdSim;
+    private Simulacion afdSimulacion;
+    
     /** Creates new form Validar
-     * @param exp
-     * @param alf
-     * @param a
+     * @param exp Expresion regular
+     * @param alf Alfabeto
+     * @param a Automata
      */
     public Validar(String exp, String alf, Automata a) {
         this.AFD = a;
@@ -186,38 +178,38 @@ public class Validar extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonValidarActionPerformed
 
+    /*
+     * Al abrir la ventana el foco se coloca en el jTextField para insertar la entrada
+     */
     public void focoTXT(){
         jTextFieldTxt.requestFocus();
     }
+
     /**
-     *
-     * @return
+     * Metodo para validar la entrada
+     * @return true en caso de exito o false en caso contrario
      */
     public boolean validarAFD() {
-
         this.setAfdSim(new Simulacion(this.jTextFieldTxt.getText(), this.AFD));
         boolean exito = this.getAfdSim().validar();
         return exito;
-
     }
     
     /**
-     *
-     * @return
+     * Obtiene el Simulador del AFD
+     * @return Simulador AFD
      */
     public Simulacion getAfdSim() {
-        return afdSim;
+        return afdSimulacion;
     }
     
     /**
-     *
-     * @param afdSim
+     * Setea el Simulador del AFD
+     * @param afdSimulacion Simulador AFD
      */
-    public void setAfdSim(Simulacion afdSim) {
-        this.afdSim = afdSim;
+    public void setAfdSim(Simulacion afdSimulacion) {
+        this.afdSimulacion = afdSimulacion;
     }
-     
-     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCerrar;

@@ -1,12 +1,14 @@
 package interfaz;
 
 /**
- *
- * @author Administrator
+ * Clase de la informacion del programa
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Acerca extends javax.swing.JFrame {
 
-    /** Creates new form About2 */
+    /** Creates new form Acerca */
     public Acerca() {
         initComponents();
     }
