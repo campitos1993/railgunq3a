@@ -5,7 +5,8 @@ import java.util.Stack;
 import analizadorlexicosintactico.*;
 
 /**
- *
+ * Clase que se encarga de realizar la validacion de una cadena y ver si la
+ * misma cumple con la expresion regular. Para ello utiliza el AFDMin generado
  * @author Administrator
  */
 public class Validacion {

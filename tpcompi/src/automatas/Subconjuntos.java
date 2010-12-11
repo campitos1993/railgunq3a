@@ -5,7 +5,8 @@ import java.util.Iterator;
 import analizadorlexicosintactico.Token;
 
 /**
- *
+ * Implementa los algoritmos de subconjuntos de modo a convertir un
+ * AFN a un AFD equivalente.
  * @author Administrator
  */
 public class Subconjuntos {
