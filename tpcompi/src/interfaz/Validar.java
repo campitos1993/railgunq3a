@@ -190,8 +190,8 @@ public class Validar extends javax.swing.JFrame {
      * @return true en caso de exito o false en caso contrario
      */
     public boolean validarAFDMin() {
-        this.setAfdMinSim(new Validacion(this.jTextFieldTxt.getText(), this.AFDMin));
-        boolean exito = this.getAfdMinSim().validar();
+        this.setAfdMinVal(new Validacion(this.jTextFieldTxt.getText(), this.AFDMin));
+        boolean exito = this.getAfdMinVal().validar();
         return exito;
     }
     
@@ -199,7 +199,7 @@ public class Validar extends javax.swing.JFrame {
      * Obtiene el validador del AFD
      * @return Validacion AFD
      */
-    public Validacion getAfdMinSim() {
+    public Validacion getAfdMinVal() {
         return afdMinValidacion;
     }
     
@@ -207,7 +207,7 @@ public class Validar extends javax.swing.JFrame {
      * Setea el Validador del AFD
      * @param afdMinValidacion Simulador AFD
      */
-    public void setAfdMinSim(Validacion afdMinValidacion) {
+    public void setAfdMinVal(Validacion afdMinValidacion) {
         this.afdMinValidacion = afdMinValidacion;
     }
     
