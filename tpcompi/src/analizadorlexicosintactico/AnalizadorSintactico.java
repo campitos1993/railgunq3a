@@ -37,6 +37,7 @@ public class AnalizadorSintactico {
         try {
             this.actual = sgteCaracter();
         } catch (Exception ex) {
+            this.errMsg = "La Expresion no coincide con el Alfabeto";
             this.error = true;
         }
         automata = new Automata();
@@ -52,7 +53,9 @@ public class AnalizadorSintactico {
         if ( ObtenerActual().compareTo(tok) == 0 ) {
             this.setActual(this.sgteCaracter());
         } else {
+            this.errMsg = "No se pudo consumir la entrada";
             throw new Exception("No se pudo consumir la entrada");
+           
         }
     }
 

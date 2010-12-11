@@ -3,7 +3,7 @@ package automatas;
 import java.util.*;
 
 /**
- *
+ * Clase que implementa el algoritmo de minimizacion de estados de un AFD
  * @author Administrator
  */
 public class MinimizacionEstados {
