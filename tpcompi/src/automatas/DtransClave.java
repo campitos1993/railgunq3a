@@ -4,7 +4,9 @@ import analizadorlexicosintactico.Token;
 
 /**
  * Clase para manejar las claves del DTrans
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class DtransClave {
     /**

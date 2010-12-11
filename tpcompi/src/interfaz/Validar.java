@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class Validar extends javax.swing.JFrame {
     private Automata AFDMin;
-    private Validacion afdMinSimulacion;
+    private Validacion afdMinValidacion;
     
     /** Creates new form Validar
      * @param exp Expresion regular
@@ -196,19 +196,19 @@ public class Validar extends javax.swing.JFrame {
     }
     
     /**
-     * Obtiene el Simulador del AFD
-     * @return Simulador AFD
+     * Obtiene el validador del AFD
+     * @return Validacion AFD
      */
     public Validacion getAfdMinSim() {
-        return afdMinSimulacion;
+        return afdMinValidacion;
     }
     
     /**
-     * Setea el Simulador del AFD
-     * @param afdMinSimulacion Simulador AFD
+     * Setea el Validador del AFD
+     * @param afdMinValidacion Simulador AFD
      */
-    public void setAfdMinSim(Validacion afdMinSimulacion) {
-        this.afdMinSimulacion = afdMinSimulacion;
+    public void setAfdMinSim(Validacion afdMinValidacion) {
+        this.afdMinValidacion = afdMinValidacion;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

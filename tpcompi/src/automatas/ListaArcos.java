@@ -7,7 +7,9 @@ import java.util.Iterator;
 /**
  * Clase que implementa el manejo de los enlaces de un estado, es decir
  * aquellos que salen del mismo
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class ListaArcos extends ArrayList<Arco> {
  

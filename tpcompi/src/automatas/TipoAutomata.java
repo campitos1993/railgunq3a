@@ -2,7 +2,9 @@ package automatas;
 
 /**
  * Enumeracion que define los tipos de automatas disponibles
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public enum TipoAutomata {
 

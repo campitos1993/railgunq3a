@@ -5,7 +5,9 @@ package automatas;
  * de un automata finito.
  * Queda definido por el estado origen, el estado destino, y el simbolo
  * del alfabeto
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Arco implements Comparable<Arco> {
 
