@@ -19,7 +19,8 @@ public class MinimizacionEstados {
     }
     
     /**
-     *
+     * Algoritmo de minimizacion, explicado en el libro del dragon
+     * cuidado, tiene mucho fuego!
      * @return
      * @throws Exception
      */
@@ -92,10 +93,10 @@ public class MinimizacionEstados {
             
             Iterator itenlaces = representante.getEnlaces().getIterator();
             while (itenlaces.hasNext()){
-                Enlace e = (Enlace) itenlaces.next();
+                Arco e = (Arco) itenlaces.next();
                 ListaEstados lista_destino = enqueLista(actual, e.getDestino());
                 Estado est_destino = AFDM.getEstadoById(lista_destino.getId());
-                Enlace nuevo_enlace = new Enlace(estado_afdm, est_destino, e.getEtiqueta());
+                Arco nuevo_enlace = new Arco(estado_afdm, est_destino, e.getEtiqueta());
                 estado_afdm.addEnlace(nuevo_enlace);
             }
        }
@@ -103,7 +104,8 @@ public class MinimizacionEstados {
    }
    
    /**
-    *
+    * Retorna el iterador de la separacion de todas las lista con la lista,
+    * pasados como parametros
     * @param todas
     * @param lista
     * @return
@@ -114,7 +116,7 @@ public class MinimizacionEstados {
             String claveSimbolos = "";
             String claveEstados = "";
             
-            for(Enlace enlace : estado.getEnlaces()){
+            for(Arco enlace : estado.getEnlaces()){
                 Estado dest = enlace.getDestino();
                 ListaEstados tmp = enqueLista(todas, dest);
                 claveSimbolos += enlace.getEtiqueta().trim();
@@ -135,7 +137,7 @@ public class MinimizacionEstados {
    
    
    /**
-    *
+    * Retorna el hash para el simbolo y el estado pasados como parametros
     * @param simbolos
     * @param estados
     * @return
@@ -165,7 +167,7 @@ public class MinimizacionEstados {
    }
    
    /**
-    *
+    * Para obtener las listas que se encuentran en un estado dado por Estado
     * @param listas
     * @param estado
     * @return

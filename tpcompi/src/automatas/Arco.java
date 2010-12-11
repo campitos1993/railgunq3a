@@ -1,23 +1,26 @@
 package automatas;
 
 /**
- *
+ * Clase para representar los enlaces (arcos) que conectan a los estados
+ * de un automata finito.
+ * Queda definido por el estado origen, el estado destino, y el simbolo
+ * del alfabeto
  * @author Administrator
  */
-public class Enlace implements Comparable<Enlace> {
+public class Arco implements Comparable<Arco> {
 
-    private Estado origen;
-    private Estado destino;
-    private String etiqueta;
-    private boolean vacio;
+    private Estado origen;          //estado origen del enlace
+    private Estado destino;         //estado destino del enlace
+    private String etiqueta;        //la etiqueta, el simbolo del abecedario
+    private boolean vacio;          //si es vacio, entonces no tiene etiqueta
 
     /**
-     *
-     * @param origen
-     * @param destino
-     * @param label
+     * Crea un nuevo enlace
+     * @param origen estado inicial
+     * @param destino estado final
+     * @param label la etiqueta
      */
-    public Enlace(Estado origen, Estado destino, String label) {
+    public Arco(Estado origen, Estado destino, String label) {
         this.origen = origen;
         this.destino = destino;
         this.etiqueta = label;
@@ -93,7 +96,7 @@ public class Enlace implements Comparable<Enlace> {
         return vacio;
     }
 
-    public int compareTo(Enlace e) {
+    public int compareTo(Arco e) {
         
         Estado origi;
         Estado desti;

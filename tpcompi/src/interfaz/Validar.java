@@ -1,7 +1,7 @@
 package interfaz;
 
 import automatas.Automata;
-import automatas.Simulacion;
+import automatas.Validacion;
 import javax.swing.JOptionPane;
 
 
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class Validar extends javax.swing.JFrame {
     private Automata AFDMin;
-    private Simulacion afdMinSimulacion;
+    private Validacion afdMinSimulacion;
     
     /** Creates new form Validar
      * @param exp Expresion regular
@@ -190,7 +190,7 @@ public class Validar extends javax.swing.JFrame {
      * @return true en caso de exito o false en caso contrario
      */
     public boolean validarAFDMin() {
-        this.setAfdMinSim(new Simulacion(this.jTextFieldTxt.getText(), this.AFDMin));
+        this.setAfdMinSim(new Validacion(this.jTextFieldTxt.getText(), this.AFDMin));
         boolean exito = this.getAfdMinSim().validar();
         return exito;
     }
@@ -199,7 +199,7 @@ public class Validar extends javax.swing.JFrame {
      * Obtiene el Simulador del AFD
      * @return Simulador AFD
      */
-    public Simulacion getAfdMinSim() {
+    public Validacion getAfdMinSim() {
         return afdMinSimulacion;
     }
     
@@ -207,7 +207,7 @@ public class Validar extends javax.swing.JFrame {
      * Setea el Simulador del AFD
      * @param afdMinSimulacion Simulador AFD
      */
-    public void setAfdMinSim(Simulacion afdMinSimulacion) {
+    public void setAfdMinSim(Validacion afdMinSimulacion) {
         this.afdMinSimulacion = afdMinSimulacion;
     }
     

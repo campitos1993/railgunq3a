@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
- *
+ * Clase que implementa el manejo de listas para los estados
  * @author Administrator
  */
 public class ListaEstados extends ArrayList<Estado>{
@@ -23,7 +23,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
     
     /**
-     *
+     * Obtenemos el identificador de la lista
      * @return
      */
     public int getId() {
@@ -31,7 +31,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
 
     /**
-     *
+     * Inserta el Estado e de la lista
      * @param e
      */
     public void insertar(Estado e) {
@@ -39,7 +39,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
     
     /**
-     *
+     * quita el Estado e de la lista
      * @param e
      */
     public void borrar(Estado e) {
@@ -47,7 +47,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
     
     /**
-     *
+     * Se obtiene el estado de una lista dado por su index, que tb es su id
      * @param index
      * @return
      */
@@ -56,7 +56,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
     
     /**
-     *
+     * Retorna el estado que tiene id = index
      * @param index
      * @return
      */
@@ -68,11 +68,11 @@ public class ListaEstados extends ArrayList<Estado>{
                 return e;
             }
         }
-        throw new IndexOutOfBoundsException(" No existe en esta lista un Estado con id = " + index);        
+        throw new IndexOutOfBoundsException("En esta lista no existe un Estado con id = " + index);
     }
 
     /**
-     *
+     * Retorna la cantidad de estados que contiene la lista
      * @return
      */
     public int cantidad() {
@@ -80,7 +80,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
 
     /**
-     *
+     * Obtenemos un iterador sobre la lista, modo practico
      * @return
      */
     public Iterator <Estado> getIterator() {
@@ -88,7 +88,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
 
     /**
-     *
+     * Marcamos como no visitados a todos los estados de la lista
      */
     public void resetVisitas() {
         for (int i = 0; i < cantidad(); i++) {
@@ -97,7 +97,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
 
     /**
-     *
+     * Para ver si el Estado e pertenece a esta lista
      * @param e
      * @return
      */
@@ -109,7 +109,7 @@ public class ListaEstados extends ArrayList<Estado>{
     }
     
     /**
-     *
+     * Obtenemos el estado marcado como inicial de la lista
      * @return
      * @throws Exception
      */
@@ -125,12 +125,12 @@ public class ListaEstados extends ArrayList<Estado>{
         if(cant_iniciales == 1){
             return getEstado(indice_ini);
         }else{
-            throw new Exception("Solo debe haber un estado incial, y en esta lista existen "+ cant_iniciales);
+            throw new Exception("Error, Solo debe haber un estado incial, y en esta lista existen "+ cant_iniciales);
         }
     }
     
     /**
-     *
+     * Obtenemos los estados finales
      * @return
      * @throws Exception
      */
@@ -148,7 +148,7 @@ public class ListaEstados extends ArrayList<Estado>{
         }else{
             throw new Exception("Este metodo se usa cuando existe un solo " +
                     "estado final y en esta lista existen " + cant_finales + 
-                    ". Utilize el metodo getEstadosFinales");
+                    ". Utilize el metodo apropiado para obtener todos los estados finales");
         }    
     }
 

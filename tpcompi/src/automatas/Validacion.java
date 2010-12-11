@@ -8,36 +8,36 @@ import analizadorlexicosintactico.*;
  *
  * @author Administrator
  */
-public class Simulacion {
+public class Validacion {
 
-    private String validationString;
-    private ArrayList<ListaEstados> estadosPathAFN;
+    //variables utilizadas para la validacion
+    private String validationString;                    //el string a validar
+    
     private ListaEstados estadosPath;
     private int currentIndex = -1;
-    private Automata automata;
-    Stack<Estado> estadosAnt;
-    Stack<Estado> estadosNew;
-    boolean[] yaEstaEn;
-    ArrayList<Enlace> enlacesVacios;
-    String currentCar; 
+    private Automata automata;                          //el automata
+    Stack<Estado> estadosAnt;                           //estados actuales
+    Stack<Estado> estadosNew;                           //estados nuevos
+    boolean[] yaEstaEn;                                 //si ya esta en nuevos
+    ArrayList<Arco> enlacesVacios;                    //aqui guardamos  mover(s,c)
+    String currentCar;                                  //el caracter actual
     
 
     /**
      *
      */
-    public Simulacion() {
+    public Validacion() {
     }
 
     /**
-     *
+     * Construye una validacion para una cadena y un automata dado
      * @param validationString
      * @param automata
      */
-    public Simulacion(String validationString, Automata automata) {
+    public Validacion(String validationString, Automata automata) {
         this.validationString = validationString;
         this.automata = automata;
         
-        this.estadosPathAFN = new ArrayList<ListaEstados>();
         this.estadosPath = new ListaEstados();
         this.yaEstaEn    = new boolean[automata.getEstados().size()];
         this.estadosAnt  = new Stack<Estado>();
@@ -45,7 +45,7 @@ public class Simulacion {
     }
 
     /**
-     *
+     * Retorna el estado final
      * @return
      */
     public Estado getEstadoFinal() {
@@ -66,7 +66,7 @@ public class Simulacion {
     }
 
     /**
-     *
+     * Retorna un estado prefinal
      * @return
      */
     public Estado getEstadoPreFinal() {
@@ -86,35 +86,38 @@ public class Simulacion {
     }
     
     /**
-     *
+     * Funcion que realiza la validacion, dependiendo del tipo de automata.
+     * Se recorre el automata de modo a validar si la cadena que se pasa como
+     * entrada pertenece al alfabeto dada la expresion regular
      * @return
      */
     public boolean validar() {
         boolean exito = true;
-        
-        if (this.automata.getTipo() == TipoAutomata.AFN) {
-            exito = this.validar_AFN();
-        } else {
-            exito = this.validar_AFD();
-        }
-            
+        exito = this.validar_AFD();
         return exito; 
     }
-
+    /**
+     * Agrega el estado s si el mismo no se encuentra ya agregado
+     * @param s
+     */
     private void agregarEstado(Estado s) {
         this.estadosNew.push(s);
         this.yaEstaEn[s.getId()] = true;
         
         this.enlacesVacios = s.getEnlacesVacios();
         
-        for (Enlace e : this.enlacesVacios) {
+        for (Arco e : this.enlacesVacios) {
             Estado t = e.getDestino();
             if (!this.yaEstaEn(t)) {
                 this.agregarEstado(t);
             }
         }
     }
-
+    /**
+     * Si la lista contiene un estado que es final, devuelve true
+     * @param S
+     * @return
+     */
     private boolean contieneFinal(ListaEstados S) {
         boolean exito = false; 
         for (Estado e : S ) {
@@ -124,58 +127,6 @@ public class Simulacion {
             }
         }        
         return exito;
-    }
-    
-    private Estado validar_AFN_Backtracking(Estado current_state) {
-        
-        String current = this.currentCar();
-        Estado result = current_state; 
-        Enlace path = current_state.getEnlaceSimboloFromHash(current);
-
-        if (path == null && this.automata.getTipo() == TipoAutomata.AFN) {
-            ArrayList<Enlace> emptys = current_state.getEnlacesVacios();
-            for (Enlace enlace : emptys) {                
-                Estado siguiente = enlace.getDestino();       
-                int indexEstado = this.estadosPath.cantidad();
-                this.estadosPath.add(siguiente);
-                result = this.validar_AFN_Backtracking(siguiente);
-                if (result != null) {
-                    break;
-                }
-                this.estadosPath.remove(indexEstado);
-            }
-        } else {
-            Estado siguiente = path.getDestino();        
-            this.estadosPath.add(siguiente);            
-            this.sigCar();
-            result = this.validar_AFN_Backtracking(siguiente);
-        }
-        return result;         
-    }
-
-    
-    private boolean validar_AFN() {
-        boolean exito = true; 
-        Subconjuntos subc = new Subconjuntos(this.automata);
-        ListaEstados S = new ListaEstados();
-        S = subc.e_cerradura(this.automata.getInicial(), S);
-        String c = this.sigCar();
-        
-        this.estadosPathAFN.add(S);
-        while (c.compareToIgnoreCase("")!=0) {
-            S = subc.mover(S, new Token(c));
-            S = subc.e_cerradura(S);   
-            if (S == null || S.size() == 0) {
-                exito = false;
-                break;
-            }
-            this.estadosPathAFN.add(S);
-            c = this.sigCar(); 
-        }
-        if (exito) {
-            exito = this.contieneFinal(S);
-        }
-        return exito; 
     }
     
     private boolean validar_AFD() {        
@@ -197,7 +148,12 @@ public class Simulacion {
         }                
         return exito;
     }
-    
+    /**
+     * nos movemos al estado s, dependiendo del caracter de entrada c
+     * @param s
+     * @param c
+     * @return el estado al que nos debemos mover
+     */
     private Estado mover(Estado s, String c) {
         Estado next = s.getDestinoFromHash(c);
         return next;
@@ -221,7 +177,7 @@ public class Simulacion {
     
     
     /**
-     *
+     * Obtenemos la cadena a validar
      * @return
      */
     public String getValidationString() {
@@ -229,7 +185,7 @@ public class Simulacion {
     }
 
     /**
-     *
+     * Seteamos la cadena a validar
      * @param validationString
      */
     public void setValidationString(String validationString) {
@@ -238,24 +194,16 @@ public class Simulacion {
         this.estadosPath = new ListaEstados();
     }
 
-    /**
-     *
-     * @return
-     */
-    public ArrayList<ListaEstados> getEstadosPathAFN() {
-        return estadosPathAFN;
-    }
 
     /**
-     *
-     * @return
+     * Obtenemos la lista de los estados del camino tomado por el automata
      */
     public ListaEstados getEstadosPath() {
         return estadosPath;
     }
 
     /**
-     *
+     * Obtenemos el indice de la lista
      * @return
      */
     public int getCurrentIndex() {
@@ -263,7 +211,7 @@ public class Simulacion {
     }
 
     /**
-     *
+     * getter del automata
      * @return
      */
     public Automata getAutomata() {
@@ -271,19 +219,23 @@ public class Simulacion {
     }
 
     /**
-     *
+     * Setea el tipo de automata, AFD, AFDMin
      * @param automata
      */
     public void setAutomata(Automata automata) {
         this.automata = automata;
     }
-
+    /**
+     * nos dice si el estado t dado como parametro ya se encuentra
+     * @param t
+     * @return
+     */
     private boolean yaEstaEn(Estado t) {
         return this.yaEstaEn[t.getId()];
     }
     
     /**
-     *
+     * nos retorna el camino de los estados del automata
      * @return
      */
     public String getSimulationPath() {

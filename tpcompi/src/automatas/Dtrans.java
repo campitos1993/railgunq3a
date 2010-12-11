@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import analizadorlexicosintactico.Token;
 
 /**
- *
+ * Clase para manejar la tabla de transiciones
  * @author Administrator
  */
 public class Dtrans {
@@ -106,7 +106,7 @@ public class Dtrans {
                 }
             }
 
-            Enlace enlace_new = new Enlace( st_new_origen, st_new_dest, 
+            Arco enlace_new = new Arco( st_new_origen, st_new_dest,
                                             clave.getIndiceToken().getValor());
             
             st_new_origen.addEnlace(enlace_new);

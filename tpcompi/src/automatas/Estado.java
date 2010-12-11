@@ -4,19 +4,23 @@ import java.util.ArrayList;
 import analizadorlexicosintactico.Token;
 
 /**
- *
+ * Clase que representa los nodos de un automata.
+ * Cada estado tiene un id (nombre unico), un lista de enlaces asociados,
+ * y atributos que definen su tipo, si es inicial, final, si ya fue visitado
+ * Implementa la interfaz Comparable para luego poder realizar comparaciones
+ * de estados en los diferentes algoritmos (de conjuntos, minimizacion, construccion)
  * @author Administrator
  */
 public class Estado implements Comparable<Estado> {
     private int id; 
-    private ListaEnlaces enlaces;
+    private ListaArcos enlaces;
 
     private boolean estadoinicial;
     private boolean estadofinal;
     private boolean visitado;
 
     /**
-     *
+     * Crea un nuevo estado
      * @param id
      * @param esInicial
      * @param esFinal
@@ -27,7 +31,7 @@ public class Estado implements Comparable<Estado> {
         this.estadoinicial  = esInicial;
         this.estadofinal    = esFinal;
         this.visitado   = visitado;
-        this.enlaces = new ListaEnlaces();
+        this.enlaces = new ListaArcos();
     }
 
     /**
@@ -42,7 +46,7 @@ public class Estado implements Comparable<Estado> {
      *
      * @return
      */
-    public ListaEnlaces getEnlaces() {
+    public ListaArcos getEnlaces() {
         return enlaces;
     }
 
@@ -106,26 +110,26 @@ public class Estado implements Comparable<Estado> {
      *
      * @param e
      */
-    public void addEnlace(Enlace e) {
+    public void addEnlace(Arco e) {
         enlaces.insertar(e);        
     }
 
     /**
-     *
-     * @param a
-     * @return
+     * Retorna el estado destino, se realiza una busqueda entre todos sus enlaces
+     * @param a token de transicion (el que define la transicion).
+     * @return estado destino al que va desde este estado por el token a
      */
     public Estado estadoDestino(Token a){
         return estadoDestinoString(a.getValor());
     }
 
     /**
-     *
+     * Idem al anterior, solo que aqui recibimos una etiqueta
      * @param a
      * @return
      */
     public Estado estadoDestinoString(String a){
-        for(Enlace x: enlaces){
+        for(Arco x: enlaces){
             if(x.getEtiqueta().compareTo(a)== 0){
                 return x.getDestino();
             }
@@ -134,12 +138,12 @@ public class Estado implements Comparable<Estado> {
     }
     
     /**
-     *
+     * retorna el estado asociado al simbolo dado
      * @param simbolo
      * @return
      */
     public Estado getDestinoFromHash(String simbolo) {
-        Enlace link = this.getEnlaceSimboloFromHash(simbolo); 
+        Arco link = this.getEnlaceSimboloFromHash(simbolo);
         Estado result = null;
         
         if (link != null) {
@@ -153,7 +157,7 @@ public class Estado implements Comparable<Estado> {
      * @param simbolo
      * @return
      */
-    public Enlace getEnlaceSimboloFromHash(String simbolo) {
+    public Arco getEnlaceSimboloFromHash(String simbolo) {
         return this.enlaces.getEnlaceSimbolo(simbolo);
     }
 
@@ -161,7 +165,7 @@ public class Estado implements Comparable<Estado> {
      *
      * @return
      */
-    public ArrayList<Enlace> getEnlacesVacios() {
+    public ArrayList<Arco> getEnlacesVacios() {
         return this.enlaces.getVacios();
     }
     
@@ -170,7 +174,7 @@ public class Estado implements Comparable<Estado> {
      *
      * @param e
      */
-    public void eliminarEnlace(Enlace e){
+    public void eliminarEnlace(Arco e){
         this.enlaces.borrar(e);
     }
     
@@ -184,7 +188,7 @@ public class Estado implements Comparable<Estado> {
         }
         
         boolean esMuerto = true;
-        for(Enlace e: this.enlaces){
+        for(Arco e: this.enlaces){
             if(e.getDestino().getId() != this.getId()){
                 esMuerto = false;
             }
