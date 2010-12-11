@@ -9,7 +9,9 @@ import analizadorlexicosintactico.Token;
  * y atributos que definen su tipo, si es inicial, final, si ya fue visitado
  * Implementa la interfaz Comparable para luego poder realizar comparaciones
  * de estados en los diferentes algoritmos (de conjuntos, minimizacion, construccion)
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Estado implements Comparable<Estado> {
     private int id; 

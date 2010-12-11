@@ -4,7 +4,9 @@ import java.util.*;
 
 /**
  * Clase que implementa el algoritmo de minimizacion de estados de un AFD
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class MinimizacionEstados {
 

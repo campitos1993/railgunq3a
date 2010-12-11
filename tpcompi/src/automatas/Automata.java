@@ -2,8 +2,10 @@ package automatas;
 import java.util.*;
 
 /**
- *
- * @author Administrator
+ * Clase encargada de generar y construir el autómata para una expresión regular
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Automata {
 

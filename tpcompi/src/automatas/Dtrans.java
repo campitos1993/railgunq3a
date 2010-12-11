@@ -6,7 +6,9 @@ import analizadorlexicosintactico.Token;
 
 /**
  * Clase para manejar la tabla de transiciones
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Dtrans {
     Hashtable dtrans;

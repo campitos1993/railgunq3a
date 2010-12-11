@@ -7,7 +7,9 @@ import analizadorlexicosintactico.Token;
 /**
  * Implementa los algoritmos de subconjuntos de modo a convertir un
  * AFN a un AFD equivalente.
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Subconjuntos {
     Automata AFN;                        //el AFN de entrada

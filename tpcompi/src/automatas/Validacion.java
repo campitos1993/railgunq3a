@@ -2,12 +2,13 @@ package automatas;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import analizadorlexicosintactico.*;
 
 /**
  * Clase que se encarga de realizar la validacion de una cadena y ver si la
  * misma cumple con la expresion regular. Para ello utiliza el AFDMin generado
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class Validacion {
 

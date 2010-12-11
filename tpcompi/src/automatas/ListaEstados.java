@@ -7,7 +7,9 @@ import java.util.Iterator;
 
 /**
  * Clase que implementa el manejo de listas para los estados
- * @author Administrator
+ * 
+ * @author Marco Alvarez
+ * @author Sebastian Lena
  */
 public class ListaEstados extends ArrayList<Estado>{
 
