@@ -9,9 +9,9 @@ import analizadorlexicosintactico.Token;
  * @author Administrator
  */
 public class Subconjuntos {
-    Automata AFN;
-    private Dtrans dtrans;
-    ArrayList<ListaEstados> Destados;
+    Automata AFN;                        //el AFN de entrada
+    private Dtrans dtrans;               //matriz para representar el AFD
+    ArrayList<ListaEstados> Destados;    //lista de estados 
             
     /**
      *
@@ -66,16 +66,14 @@ public class Subconjuntos {
     }
     
     /**
+     * Implementa y ejecuta el algoritmo e_cerradura(s),
      *
-     * @param s
-     * @param listaActual
-     * @return
-     */
+     **/
     public ListaEstados e_cerradura(Estado s, ListaEstados listaActual) {
         Iterator it = s.getEnlaces().getIterator();
         ListaEstados listaNueva = null;
         while(it.hasNext()){
-            Enlace e = (Enlace) it.next();
+            Arco e = (Arco) it.next();
             if(e.getEtiqueta().compareTo("€") == 0){
                 listaNueva = e_cerradura(e.getDestino(), listaActual);
                 listaActual = concatListas(listaActual, listaNueva );
@@ -86,11 +84,11 @@ public class Subconjuntos {
         return listaActual;
     }
     
-    /**
-     *
-     * @param T
-     * @return
-     */
+   /**
+     * Implementacion de e_cerradura(ListaEstados) del Algoritmo de Subconjuntos.
+     * Por cada estado de la lista recibida se recorre recursivamente por
+     * los enlaces "vacio" y se genera una nueva lista.
+     **/
     public ListaEstados e_cerradura(ListaEstados T){
         if(T == null){
             return null;
@@ -118,7 +116,7 @@ public class Subconjuntos {
         Iterator itEstados = null; 
         Iterator itEnlaces = null;
         Estado estado = null;
-        Enlace enlace = null;
+        Arco enlace = null;
         ListaEstados lista = new ListaEstados();
         
         itEstados = T.getIterator();
@@ -127,7 +125,7 @@ public class Subconjuntos {
             itEnlaces = estado.getEnlaces().getIterator();
             
             while(itEnlaces.hasNext()){    
-                enlace = (Enlace) itEnlaces.next();
+                enlace = (Arco) itEnlaces.next();
                 if(enlace.getEtiqueta().compareTo(a.getValor()) == 0){
                     lista.insertar(enlace.getDestino());
                 }
@@ -140,6 +138,10 @@ public class Subconjuntos {
         }
     }
 
+    /**
+     * tenemos estados sin marcar aun?
+     * @return
+     */
     private boolean hayEstadosSinMarcar(){
         Iterator it = Destados.iterator();
         ListaEstados list_est;
@@ -151,7 +153,11 @@ public class Subconjuntos {
         }
         return false;
     }
-    
+    /**
+     * Retorna la lista de estados sin marcar
+     * @return
+     * @throws Exception
+     */
     private ListaEstados estadoSinMarcar() throws Exception{
         Iterator it = Destados.iterator();
         ListaEstados list_est;
@@ -163,7 +169,7 @@ public class Subconjuntos {
         }
         throw new Exception("No hay Lista de Estados sin marcar en Destados.");
     }
-
+     
     private int estaEnDestados(ListaEstados U){
         Iterator it = Destados.iterator();
         ListaEstados tmp;
@@ -177,11 +183,9 @@ public class Subconjuntos {
     }
     
 
-    /**
-     *
-     * @param A
-     * @param B
-     * @return
+    /***
+     * Retorna el id de la lista de estados E dentro de
+     * Destados, si es que E no esta en la lista de estados retorna -1.
      */
     public static ListaEstados concatListas(ListaEstados A, ListaEstados B){
         ListaEstados ret = new ListaEstados();
@@ -216,7 +220,7 @@ public class Subconjuntos {
     }
     
     /**
-     *
+     * Elimina aquellos estados que no pueden ser alcanzados
      * @param AFD
      * @return
      */
@@ -249,7 +253,8 @@ public class Subconjuntos {
     }
 
     /**
-     *
+     * Para marcar como vistitado un nodo asi como a su hijos, en forma
+     * recursiva
      * @param actual
      */
     public static void visitarRecursivo(Estado actual){
@@ -257,7 +262,7 @@ public class Subconjuntos {
             actual.setVisitado(true);
             Iterator it = actual.getEnlaces().iterator();
             while(it.hasNext()){
-                Enlace enlace = (Enlace)it.next();
+                Arco enlace = (Arco)it.next();
                 visitarRecursivo(enlace.getDestino());
             }
         }

@@ -5,25 +5,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- *
+ * Clase que implementa el manejo de los enlaces de un estado, es decir
+ * aquellos que salen del mismo
  * @author Administrator
  */
-public class ListaEnlaces extends ArrayList<Enlace> {
+public class ListaArcos extends ArrayList<Arco> {
  
-    private int id; 
-    private HashMap<String, Integer> TablaEnlaces;
-    private ArrayList<Enlace> vacios;
+    private int id;                                     //id de la lista
+    private HashMap<String, Integer> TablaEnlaces;      //tabla hash para la lista de enlaces, permite indexar para cada símbolo del alfabeto, el índice del array list
+    private ArrayList<Arco> vacios;                   //lista de enlaces cuyo label es el 'e'
     
     /**
-     *
+     * Crea una nueva lista, setea la tabla y la lista de vacios
      */
-    public ListaEnlaces(){
+    public ListaArcos(){
         this.TablaEnlaces = new HashMap<String, Integer>();
-        this.vacios       = new ArrayList<Enlace>();
+        this.vacios       = new ArrayList<Arco>();
     }
 
     /**
-     *
+     * Setter del identificador
      * @param id
      */
     public void setId(int id) {
@@ -31,7 +32,7 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
     
     /**
-     *
+     * Getter del identificador
      * @return
      */
     public int getId() {
@@ -39,35 +40,35 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Obtener la lista de enlaces
      * @return
      */
-    public ArrayList<Enlace> getVacios() {
+    public ArrayList<Arco> getVacios() {
         return vacios;
     }
 
     /**
-     *
+     * Obtenemos el enlace con id = index
      * @param index
      * @return
      */
-    public Enlace getEnlace(int index) {
+    public Arco getEnlace(int index) {
         return this.get(index);
     }
 
     /**
-     *
+     * Obtenemos el Iterador sobre la lista
      * @return
      */
-    public Iterator<Enlace> getIterator() {
+    public Iterator<Arco> getIterator() {
         return this.iterator();
     }
 
     /**
-     *
+     * Add un nuevo enlace e a la lista
      * @param e
      */
-    public void insertar(Enlace e) {
+    public void insertar(Arco e) {
     
         int     indexToInsert   = this.cantidad();        
         String  simbolo         = e.getEtiqueta();
@@ -82,11 +83,11 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Insertar un nuevo enlace en la posicion indicada por index
      * @param e
      * @param index
      */
-    public void insertarAt(Enlace e, int index) {
+    public void insertarAt(Arco e, int index) {
     
         int     indexToInsert   = index;        
         String  simbolo         = e.getEtiqueta();
@@ -101,13 +102,13 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
     
     /**
-     *
+     * Obtenemos el enlace cuya etiqueta = symbol
      * @param symbol
      * @return
      */
-    public Enlace getEnlaceSimbolo(String symbol) {
+    public Arco getEnlaceSimbolo(String symbol) {
         Integer index = this.TablaEnlaces.get(symbol);        
-        Enlace result = null; 
+        Arco result = null;
         
         if (index != null) {
             result = this.get(index);
@@ -116,28 +117,31 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Concatenar una lista enlaces a esta al final.
      * @param l
      */
-    public void insertarListaEnlaces(ListaEnlaces l) {
-        Iterator <Enlace> i = l.getIterator();
-        Enlace current; 
+    public void insertarListaEnlaces(ListaArcos l) {
+        Iterator <Arco> i = l.getIterator();
+        Arco current;
         
         while(i.hasNext()) {
             current = i.next();            
             this.insertar(current);
         }
     }
-
-    private void agregarEnlaceVacio(Enlace e) {
+    /**
+     * add un enlace cuya etiqueta = vacio
+     * @param e
+     */
+    private void agregarEnlaceVacio(Arco e) {
         this.getVacios().add(e);
     }
     
     /**
-     *
+     * Borra el enlace e
      * @param e
      */
-    public void borrar(Enlace e) {
+    public void borrar(Arco e) {
         
         String simbolo = e.getEtiqueta();
         
@@ -151,7 +155,7 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Retorna la cantidad de enlaces de la lista
      * @return
      */
     public int cantidad() {
@@ -159,7 +163,7 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Si la lista contiene el enlace e
      * @param e
      * @return
      */
@@ -172,19 +176,19 @@ public class ListaEnlaces extends ArrayList<Enlace> {
     }
 
     /**
-     *
+     * Para comparar dos listas de enlaces
      * @param o
      * @return
      */
     public int compareTo(Object o) {
         
         int result = -1; 
-        ListaEnlaces otro = (ListaEnlaces) o;
+        ListaArcos otro = (ListaArcos) o;
         
         if (this.cantidad() == otro.cantidad()) {
             for (int i = 0; i < this.cantidad(); i++) {
-                Enlace a = this.getEnlace(i);
-                Enlace b = otro.getEnlace(i);
+                Arco a = this.getEnlace(i);
+                Arco b = otro.getEnlace(i);
                 if (a.compareTo(b) != 0) {
                     return -1;
                 }

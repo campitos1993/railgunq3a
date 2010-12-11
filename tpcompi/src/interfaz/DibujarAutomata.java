@@ -1,7 +1,7 @@
 package interfaz;
 
 import automatas.Automata;
-import automatas.Enlace;
+import automatas.Arco;
 import automatas.Estado;
 import automatas.ListaEstados;
 import graphviz.GraphViz;
@@ -177,7 +177,7 @@ public class DibujarAutomata extends javax.swing.JFrame {
             
             nodos+="\t"+e.getId() + " "+estilos+"\n";
 
-            for (Enlace enlace : e.getEnlaces()) {
+            for (Arco enlace : e.getEnlaces()) {
 
                 Estado orig = enlace.getOrigen();
                 Estado dest = enlace.getDestino();
