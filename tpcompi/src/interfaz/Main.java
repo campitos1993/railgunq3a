@@ -820,7 +820,9 @@ public class Main extends javax.swing.JFrame {
                 "ESTADOS", "Alfabeto1", "Alfabeto2", "Alfabeto3"
             }
         ));
-        
+        this.resetTablaRenderer(this.AFN_jTable);
+        this.resetTablaRenderer(this.AFD_jTable);
+        this.resetTablaRenderer(this.AFDM_jTable);
     }
 
     private void unlock(){
