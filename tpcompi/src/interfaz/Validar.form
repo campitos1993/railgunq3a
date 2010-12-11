@@ -60,12 +60,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelExp" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextFielExp" pref="329" max="32767" attributes="0"/>
+                          <Component id="jTextFielExp" pref="388" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelABC" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextFieldABC" pref="390" max="32767" attributes="0"/>
+                          <Component id="jTextFieldABC" pref="434" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jButtonLimpiar" min="-2" max="-2" attributes="0"/>
@@ -77,7 +77,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelTxt" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextFieldTxt" pref="350" max="32767" attributes="0"/>
+                          <Component id="jTextFieldTxt" pref="403" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
